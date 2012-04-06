@@ -59,7 +59,6 @@ public class Channeler {
         double chatRadius = cs.getDouble("chat-radius");
         boolean global = cs.getBoolean("global");
         boolean interworld = cs.getBoolean("interworld");
-        Boolean snoop = cs.getBoolean("snoop");
         String chatFormat = cs.getString("chat-format");
 
         chatRadiusSet(sender, chatRadius, event);
