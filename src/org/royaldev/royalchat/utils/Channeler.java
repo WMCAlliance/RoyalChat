@@ -33,6 +33,7 @@ public class Channeler {
         if (chatRadius == 0) {
             for (Player p : plugin.getServer().getOnlinePlayers()) {
                 if (p.equals(sender)) continue;
+                if (!playerChans.get(p).equals(playerChans.get(sender))) continue;
                 event.getRecipients().add(p);
             }
             return;
