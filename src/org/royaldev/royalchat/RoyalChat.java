@@ -46,7 +46,9 @@ public class RoyalChat extends JavaPlugin {
 
     public Formatter f = new Formatter(this);
     public Channeler c = new Channeler(this);
-    
+
+    public Metrics m = null;
+
     public List<Player> acd = new ArrayList<Player>();
 
     private final RoyalChatPListener playerListener = new RoyalChatPListener(this);
@@ -105,6 +107,13 @@ public class RoyalChat extends JavaPlugin {
     }
 
     public void onEnable() {
+
+        try {
+            m = new Metrics(this);
+            m.start();
+        } catch (Exception e) {
+            getLogger().warning("Could not start metrics!");
+        }
 
         spout = getServer().getPluginManager().isPluginEnabled("Spout");
 
