@@ -63,7 +63,7 @@ public class Formatter {
                 if (!VanishUtils.isVanished(p)) {
                     if (message.toLowerCase().contains(p.getName().toLowerCase())) {
                         if (plugin.spout) SpoutMethods.updateNumberOnName(p, plugin);
-                        message = (plugin.useAtSign) ? message.replaceAll("(?i)" + p.getName(), ChatColor.AQUA + "@" + p.getName() + ChatColor.WHITE) : message.replaceAll("(?i)" + p.getName(), ChatColor.AQUA + p.getName() + ChatColor.WHITE);
+                        message = (plugin.useAtSign) ? message.replaceAll("(?i)\b" + p.getName() + "\b", ChatColor.AQUA + "@" + p.getName() + ChatColor.WHITE) : message.replaceAll("(?i)\b" + p.getName() + "\b", ChatColor.AQUA + p.getName() + ChatColor.WHITE);
                         if (plugin.smokeAtUser) {
                             Location pLoc = new Location(p.getWorld(), p.getLocation().getX(), p.getLocation().getY() + 1, p.getLocation().getZ());
                             for (int i = 0; i < 8; i++) {
