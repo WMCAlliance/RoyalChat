@@ -29,6 +29,7 @@ import org.royaldev.royalchat.listeners.SpoutListener;
 import org.royaldev.royalchat.utils.Channeler;
 import org.royaldev.royalchat.utils.Formatter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -87,7 +88,6 @@ public class RoyalChat extends JavaPlugin {
     public Float maxRadius = null;
 
     public void loadConfiguration() {
-        saveConfig();
         formatBase = getConfig().getString("chat-format").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
         formatMeBase = getConfig().getString("me-format").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
         formatSay = getConfig().getString("say-format").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
@@ -107,6 +107,8 @@ public class RoyalChat extends JavaPlugin {
     }
 
     public void onEnable() {
+
+        if (!new File(getDataFolder() + File.separator + "config.yml").exists()) saveDefaultConfig();
 
         try {
             m = new Metrics(this);
