@@ -64,3 +64,12 @@ channels:
     password: "supersecret"
     # See all messages from all channels?
     snoop: true
+# Set messages here. Set the message to "" to disable it.
+# Join messages
+join-message: "&e{name} has joined."
+# Quit messages
+quit-message: "&e{name} has quit."
+# Kick message
+kick-message: "&e{name} was kicked!"
+# World message
+world-message: "&e{name} joined {world} from {fromworld}."

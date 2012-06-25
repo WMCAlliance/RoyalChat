@@ -78,6 +78,10 @@ public class RoyalChat extends JavaPlugin {
     public String formatMeBase = null;
     public String formatSay = null;
     public String formatAdmin = null;
+    public String joinMessage = null;
+    public String quitMessage = null;
+    public String kickMessage = null;
+    public String worldMessage = null;
     public Boolean firstWordCapital = null;
     public Boolean highlightAtUser = null;
     public Boolean highlightUrls = null;
@@ -92,10 +96,14 @@ public class RoyalChat extends JavaPlugin {
     public Float maxRadius = null;
 
     public void loadConfiguration() {
-        formatBase = getConfig().getString("chat-format").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
-        formatMeBase = getConfig().getString("me-format").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
-        formatSay = getConfig().getString("say-format").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
-        formatAdmin = getConfig().getString("admin-format").replaceAll("(&([a-f0-9kK]))", "\u00A7$2");
+        formatBase = colorize(getConfig().getString("chat-format"));
+        formatMeBase = colorize(getConfig().getString("me-format"));
+        formatSay = colorize(getConfig().getString("say-format"));
+        formatAdmin = colorize(getConfig().getString("admin-format"));
+        joinMessage = colorize(getConfig().getString("join-message"));
+        kickMessage = colorize(getConfig().getString("kick-message"));
+        quitMessage = colorize(getConfig().getString("quit-message"));
+        worldMessage = colorize(getConfig().getString("world-message"));
         firstWordCapital = getConfig().getBoolean("first-word-capital");
         highlightAtUser = getConfig().getBoolean("highlight-at-user");
         highlightUrls = getConfig().getBoolean("highlight-urls");
@@ -108,6 +116,11 @@ public class RoyalChat extends JavaPlugin {
         useChannels = getConfig().getBoolean("use-channels");
         capsPerc = (float) this.getConfig().getDouble("caps-removal-percent");
         maxRadius = (float) this.getConfig().getDouble("chat-radius");
+    }
+
+    public String colorize(String text) {
+        if (text == null) return null;
+        return text.replaceAll("(&([a-f0-9k-orR]))", "\u00A7$2");
     }
 
     public String returnAlias(World w) {

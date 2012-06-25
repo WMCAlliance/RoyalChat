@@ -1,14 +1,14 @@
 package org.royaldev.royalchat.listeners;
 
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.*;
 import org.royaldev.royalchat.RoyalChat;
 import org.royaldev.royalchat.utils.Channeler;
 import org.royaldev.royalchat.utils.RUtils;
@@ -27,8 +27,16 @@ public class RoyalChatPListener implements Listener {
         return player.isOp() || plugin.setupPermissions() && RoyalChat.permission.has(player, node);
     }
 
+    public String parseVariables(Player p, String format) {
+        format = format.replace("{name}", p.getName());
+        format = format.replace("{dispname}", p.getDisplayName());
+        format = format.replace("{world}", p.getWorld().getName());
+        return format;
+    }
+
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
+        e.setJoinMessage(parseVariables(e.getPlayer(), plugin.joinMessage));
         if (Channeler.playerChans.containsKey(e.getPlayer())) return;
         ConfigurationSection channels = plugin.getConfig().getConfigurationSection("channels");
         for (String chan : channels.getValues(true).keySet()) {
@@ -38,6 +46,29 @@ public class RoyalChatPListener implements Listener {
             if (defChan == null) continue;
             if (defChan) plugin.c.addToChannel(e.getPlayer(), chanc.getName());
         }
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        e.setQuitMessage(parseVariables(e.getPlayer(), plugin.quitMessage));
+    }
+
+    @EventHandler
+    public void onKick(PlayerKickEvent e) {
+        if (e.isCancelled()) return;
+        e.setLeaveMessage(parseVariables(e.getPlayer(), plugin.kickMessage));
+    }
+
+    @EventHandler
+    public void onTeleport(PlayerTeleportEvent e) {
+        if (e.isCancelled()) return;
+        if (e.getTo().getWorld().equals(e.getFrom().getWorld())) return;
+        World to = e.getTo().getWorld();
+        World from = e.getFrom().getWorld();
+        String format = plugin.worldMessage.replace("{world}", plugin.returnAlias(to));
+        format = format.replace("{fromworld}", plugin.returnAlias(from));
+        format = parseVariables(e.getPlayer(), format);
+        plugin.getServer().broadcastMessage(format);
     }
 
     // The chat processor
