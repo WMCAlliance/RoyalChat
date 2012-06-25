@@ -28,6 +28,16 @@ public class RoyalChatPListener implements Listener {
     }
 
     public String parseVariables(Player p, String format) {
+        try {
+            format = format.replace("{prefix}", RoyalChat.chat.getPlayerPrefix(p));
+        } catch (Exception e) {
+            format = format.replace("{prefix}", "");
+        }
+        try {
+            format = format.replace("{suffix}", RoyalChat.chat.getPlayerSuffix(p));
+        } catch (Exception e) {
+            format = format.replace("{suffix}", "");
+        }
         format = format.replace("{name}", p.getName());
         format = format.replace("{dispname}", p.getDisplayName());
         format = format.replace("{world}", p.getWorld().getName());
