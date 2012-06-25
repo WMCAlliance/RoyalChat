@@ -18,7 +18,6 @@ package org.royaldev.royalchat;
  If forked and not credited, alert him.
 */
 
-import com.onarandombox.MultiverseCore.MVWorld;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import net.milkbowl.vault.chat.Chat;
@@ -116,7 +115,7 @@ public class RoyalChat extends JavaPlugin {
         if (mv == null) return w.getName();
         MultiverseCore mvc = (MultiverseCore) mv;
         MultiverseWorld mvw = mvc.getMVWorldManager().getMVWorld(w);
-        return mvw.getAlias();
+        return mvw.getColor() + mvw.getAlias();
     }
 
     public void onEnable() {
