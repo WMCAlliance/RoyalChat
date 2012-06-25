@@ -146,8 +146,8 @@ public class Formatter {
 
         String group2 = RoyalChat.permission.getPrimaryGroup(sender);
         if (group2 != null) {
-            String prefix2 = plugin.getConfig().getString("pbukkit.prefixes." + group);
-            String suffix2 = plugin.getConfig().getString("pbukkit.suffixes." + group);
+            String prefix2 = plugin.colorize(plugin.getConfig().getString("pbukkit.prefixes." + group));
+            String suffix2 = plugin.colorize(plugin.getConfig().getString("pbukkit.suffixes." + group));
             if (prefix2 != null) {
                 name = prefix2 + name;
                 dispname = prefix2 + name;
@@ -277,8 +277,8 @@ public class Formatter {
 
             String group2 = RoyalChat.permission.getPrimaryGroup(p);
             if (group2 != null) {
-                String prefix2 = plugin.getConfig().getString("pbukkit.prefixes." + group);
-                String suffix2 = plugin.getConfig().getString("pbukkit.suffixes." + group);
+                String prefix2 = plugin.colorize(plugin.getConfig().getString("pbukkit.prefixes." + group));
+                String suffix2 = plugin.colorize(plugin.getConfig().getString("pbukkit.suffixes." + group));
                 if (prefix2 != null) {
                     name = prefix2 + name;
                     dispname = prefix2 + name;
@@ -401,8 +401,8 @@ public class Formatter {
 
             String group2 = RoyalChat.permission.getPrimaryGroup(p);
             if (group2 != null) {
-                String prefix2 = plugin.getConfig().getString("pbukkit.prefixes." + group);
-                String suffix2 = plugin.getConfig().getString("pbukkit.suffixes." + group);
+                String prefix2 = plugin.colorize(plugin.getConfig().getString("pbukkit.prefixes." + group));
+                String suffix2 = plugin.colorize(plugin.getConfig().getString("pbukkit.suffixes." + group));
                 if (prefix2 != null) {
                     name = prefix2 + name;
                     dispname = prefix2 + name;
