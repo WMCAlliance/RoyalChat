@@ -18,9 +18,14 @@ package org.royaldev.royalchat;
  If forked and not credited, alert him.
 */
 
+import com.onarandombox.MultiverseCore.MVWorld;
+import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -104,6 +109,14 @@ public class RoyalChat extends JavaPlugin {
         useChannels = getConfig().getBoolean("use-channels");
         capsPerc = (float) this.getConfig().getDouble("caps-removal-percent");
         maxRadius = (float) this.getConfig().getDouble("chat-radius");
+    }
+
+    public String returnAlias(World w) {
+        Plugin mv = getServer().getPluginManager().getPlugin("Multiverse-Core");
+        if (mv == null) return w.getName();
+        MultiverseCore mvc = (MultiverseCore) mv;
+        MultiverseWorld mvw = mvc.getMVWorldManager().getMVWorld(w);
+        return mvw.getAlias();
     }
 
     public void onEnable() {

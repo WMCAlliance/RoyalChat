@@ -144,7 +144,7 @@ public class Formatter {
             }
         }
 
-        String world = sender.getWorld().getName();
+        String world = plugin.returnAlias(sender.getWorld());
 
         format = format.replace("{name}", name);
         format = format.replace("{dispname}", dispname);
@@ -259,7 +259,7 @@ public class Formatter {
                 }
             }
 
-            world = p.getWorld().getName();
+            world = plugin.returnAlias(p.getWorld());
         }
 
         format = format.replace("{name}", name);
@@ -369,7 +369,7 @@ public class Formatter {
                 }
             }
 
-            world = p.getWorld().getName();
+            world = plugin.returnAlias(p.getWorld());
         }
 
         format = format.replace("{name}", name);

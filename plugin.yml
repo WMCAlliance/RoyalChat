@@ -2,7 +2,7 @@ name: RoyalChat
 main: org.royaldev.royalchat.RoyalChat
 version: 0.0.8
 website: http://dev.royaldev.org/
-softdepend: [Vault, Towny, VanishNoPacket, Spout]
+softdepend: [Vault, Towny, VanishNoPacket, Spout, Multiverse-Core]
 author: jkcclemens
 
 commands:
