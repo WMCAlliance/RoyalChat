@@ -115,7 +115,7 @@ public class RoyalChat extends JavaPlugin {
         if (mv == null) return w.getName();
         MultiverseCore mvc = (MultiverseCore) mv;
         MultiverseWorld mvw = mvc.getMVWorldManager().getMVWorld(w);
-        return mvw.getColor() + mvw.getAlias();
+        return mvw.getColoredWorldString();
     }
 
     public void onEnable() {
