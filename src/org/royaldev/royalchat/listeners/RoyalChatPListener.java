@@ -38,8 +38,23 @@ public class RoyalChatPListener implements Listener {
         } catch (Exception e) {
             format = format.replace("{suffix}", "");
         }
-        format = format.replace("{name}", plugin.colorize(p.getName()));
-        format = format.replace("{dispname}", plugin.colorize(p.getDisplayName()));
+        String name = p.getName();
+        String dispname = p.getDisplayName();
+        String group = RoyalChat.permission.getPrimaryGroup(p);
+        if (group != null) {
+            String prefix = plugin.getConfig().getString("pbukkit.prefixes." + group);
+            String suffix = plugin.getConfig().getString("pbukkit.suffixes." + group);
+            if (prefix != null) {
+                name = prefix + name;
+                dispname = prefix + name;
+            }
+            if (suffix != null) {
+                name = name + suffix;
+                name = name + suffix;
+            }
+        }
+        format = format.replace("{name}", plugin.colorize(name));
+        format = format.replace("{dispname}", plugin.colorize(dispname));
         format = format.replace("{world}", plugin.returnAlias(p.getWorld()));
         return format;
     }

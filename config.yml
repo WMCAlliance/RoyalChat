@@ -50,7 +50,7 @@ channels:
     interworld: true
     # Use a password?
     use-password: false
-    # Sets the password (syntax: /ch d abc) - if use_password is false, this is optional
+    # Sets the password (syntax: /ch d abc) - if use-password is false, this is optional
     password: "abc"
   admin:
     name: "Admin"
@@ -73,3 +73,11 @@ quit-message: "&e{name} has quit."
 kick-message: "&e{name} was kicked!"
 # World message
 world-message: "&e{name} joined {world} from {fromworld}."
+# PermissionsBukkit prefixes/suffixes
+pbukkit:
+    prefixes:
+        Mod: '&b'
+        Admin: '&a'
+    suffixes:
+        Mod: '&f'
+        Admin: '&e'
