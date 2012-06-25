@@ -50,7 +50,7 @@ public class RoyalChatPListener implements Listener {
             }
             if (suffix != null) {
                 name = name + suffix;
-                name = name + suffix;
+                dispname = name + suffix;
             }
         }
         format = format.replace("{name}", plugin.colorize(name));

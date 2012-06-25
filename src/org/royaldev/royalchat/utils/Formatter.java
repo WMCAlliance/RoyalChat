@@ -63,7 +63,7 @@ public class Formatter {
                 if (!VanishUtils.isVanished(p)) {
                     if (message.toLowerCase().contains(p.getName().toLowerCase())) {
                         if (plugin.spout) SpoutMethods.updateNumberOnName(p, plugin);
-                        message = (plugin.useAtSign) ? message.replaceAll("(?i)\\b" + p.getName() + "\\b" , ChatColor.AQUA + "@" + p.getName() + ChatColor.WHITE) : message.replaceAll("(?i)\\b" + p.getName() + "\\b" , ChatColor.AQUA + p.getName() + ChatColor.WHITE);
+                        message = (plugin.useAtSign) ? message.replaceAll("(?i)\\b" + p.getName() + "\\b", ChatColor.AQUA + "@" + p.getName() + ChatColor.WHITE) : message.replaceAll("(?i)\\b" + p.getName() + "\\b", ChatColor.AQUA + p.getName() + ChatColor.WHITE);
                         if (plugin.smokeAtUser) {
                             Location pLoc = new Location(p.getWorld(), p.getLocation().getX(), p.getLocation().getY() + 1, p.getLocation().getZ());
                             for (int i = 0; i < 8; i++) {
@@ -141,6 +141,20 @@ public class Formatter {
                 townysurname = "";
                 townytown = "";
                 townynation = "";
+            }
+        }
+
+        String group2 = RoyalChat.permission.getPrimaryGroup(sender);
+        if (group2 != null) {
+            String prefix2 = plugin.getConfig().getString("pbukkit.prefixes." + group);
+            String suffix2 = plugin.getConfig().getString("pbukkit.suffixes." + group);
+            if (prefix2 != null) {
+                name = prefix2 + name;
+                dispname = prefix2 + name;
+            }
+            if (suffix2 != null) {
+                name = name + suffix2;
+                dispname = name + suffix2;
             }
         }
 
@@ -260,6 +274,20 @@ public class Formatter {
             }
 
             world = plugin.returnAlias(p.getWorld());
+
+            String group2 = RoyalChat.permission.getPrimaryGroup(p);
+            if (group2 != null) {
+                String prefix2 = plugin.getConfig().getString("pbukkit.prefixes." + group);
+                String suffix2 = plugin.getConfig().getString("pbukkit.suffixes." + group);
+                if (prefix2 != null) {
+                    name = prefix2 + name;
+                    dispname = prefix2 + name;
+                }
+                if (suffix2 != null) {
+                    name = name + suffix2;
+                    dispname = name + suffix2;
+                }
+            }
         }
 
         format = format.replace("{name}", name);
@@ -370,6 +398,20 @@ public class Formatter {
             }
 
             world = plugin.returnAlias(p.getWorld());
+
+            String group2 = RoyalChat.permission.getPrimaryGroup(p);
+            if (group2 != null) {
+                String prefix2 = plugin.getConfig().getString("pbukkit.prefixes." + group);
+                String suffix2 = plugin.getConfig().getString("pbukkit.suffixes." + group);
+                if (prefix2 != null) {
+                    name = prefix2 + name;
+                    dispname = prefix2 + name;
+                }
+                if (suffix2 != null) {
+                    name = name + suffix2;
+                    dispname = name + suffix2;
+                }
+            }
         }
 
         format = format.replace("{name}", name);
