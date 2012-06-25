@@ -74,7 +74,7 @@ public class RoyalChatPListener implements Listener {
         String format = plugin.worldMessage.replace("{world}", plugin.returnAlias(to));
         format = format.replace("{fromworld}", plugin.returnAlias(from));
         format = parseVariables(e.getPlayer(), format);
-        if (format.equals("")) format = null;
+        if (format.equals("")) return;
         plugin.getServer().broadcastMessage(format);
     }
 
