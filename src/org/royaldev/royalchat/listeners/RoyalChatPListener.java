@@ -60,10 +60,15 @@ public class RoyalChatPListener implements Listener {
     }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
+    public void onJoinM(PlayerJoinEvent e) {
         String message = parseVariables(e.getPlayer(), plugin.joinMessage);
         if (message.equals("")) message = null;
+        if (message != null && message.equalsIgnoreCase("no-handle")) return;
         e.setJoinMessage(message);
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
         if (Channeler.playerChans.containsKey(e.getPlayer())) return;
         ConfigurationSection channels = plugin.getConfig().getConfigurationSection("channels");
         for (String chan : channels.getValues(true).keySet()) {
@@ -79,6 +84,7 @@ public class RoyalChatPListener implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         String message = parseVariables(e.getPlayer(), plugin.quitMessage);
         if (message.equals("")) message = null;
+        if (message != null && message.equalsIgnoreCase("no-handle")) return;
         e.setQuitMessage(message);
     }
 
@@ -86,6 +92,7 @@ public class RoyalChatPListener implements Listener {
     public void onKick(PlayerKickEvent e) {
         if (e.isCancelled()) return;
         String message = parseVariables(e.getPlayer(), plugin.kickMessage);
+        if (message != null && message.equalsIgnoreCase("no-handle")) return;
         if (message.equals("")) message = null;
         e.setLeaveMessage(message);
     }
@@ -100,6 +107,7 @@ public class RoyalChatPListener implements Listener {
         format = format.replace("{fromworld}", plugin.returnAlias(from));
         format = parseVariables(e.getPlayer(), format);
         if (format.equals("")) return;
+        if (format.equalsIgnoreCase("no-handle")) return;
         plugin.getServer().broadcastMessage(format);
     }
 

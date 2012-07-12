@@ -64,7 +64,7 @@ channels:
     password: "supersecret"
     # See all messages from all channels?
     snoop: true
-# Set messages here. Set the message to "" to disable it.
+# Set messages here. Set the message to "" to disable it entirely. Set message to "no-handle" to stop RoyalChat from handling that message
 # Join messages
 join-message: "&e{name} has joined."
 # Quit messages
@@ -73,7 +73,7 @@ quit-message: "&e{name} has quit."
 kick-message: "&e{name} was kicked!"
 # World message
 world-message: "&e{name} joined {world} from {fromworld}."
-# PermissionsBukkit prefixes/suffixes
+# PermissionsBukkit prefixes/suffixes (these will apply regardless of permission system - disable with pbukkit: [])
 pbukkit:
     prefixes:
         Mod: '&b'
