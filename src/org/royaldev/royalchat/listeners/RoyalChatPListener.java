@@ -92,7 +92,7 @@ public class RoyalChatPListener implements Listener {
     public void onKick(PlayerKickEvent e) {
         if (e.isCancelled()) return;
         String message = parseVariables(e.getPlayer(), plugin.kickMessage);
-        message = message.replaceAll("\\{reason\\}", e.getReason());
+        message = message.replaceAll("\\{reason\\}", RUtils.colorize(e.getReason()));
         if (message != null && message.equalsIgnoreCase("no-handle")) return;
         if (message != null && message.equals("")) message = null;
         e.setLeaveMessage(message);
