@@ -91,8 +91,9 @@ public class RoyalChatPListener implements Listener {
     @EventHandler
     public void onKick(PlayerKickEvent e) {
         if (e.isCancelled()) return;
-        String message = parseVariables(e.getPlayer(), plugin.kickMessage);
-        message = message.replaceAll("\\{reason\\}", RUtils.colorize(e.getReason()));
+        String message = plugin.kickMessage;
+        message = message.replace("{reason}", RUtils.colorize(e.getReason()));
+        message = parseVariables(e.getPlayer(), message);
         if (message != null && message.equalsIgnoreCase("no-handle")) return;
         if (message != null && message.equals("")) message = null;
         e.setLeaveMessage(message);
