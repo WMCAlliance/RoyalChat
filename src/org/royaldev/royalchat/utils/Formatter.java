@@ -92,6 +92,7 @@ public class Formatter {
         String prefix;
         try {
             prefix = RoyalChat.chat.getPlayerPrefix(sender).replaceAll("(&([a-f0-9k-orR]))", "\u00A7$2");
+            if (prefix == null) prefix = "";
         } catch (Exception e) {
             prefix = "";
         }
@@ -99,6 +100,7 @@ public class Formatter {
         String suffix;
         try {
             suffix = RoyalChat.chat.getPlayerSuffix(sender).replaceAll("(&([a-f0-9k-orR]))", "\u00A7$2");
+            if (suffix == null) suffix = "";
         } catch (Exception e) {
             suffix = "";
         }
@@ -106,6 +108,7 @@ public class Formatter {
         String group;
         try {
             group = RoyalChat.permission.getPrimaryGroup(sender).replaceAll("(&([a-f0-9k-orR]))", "\u00A7$2");
+            if (group == null) group = "";
         } catch (Exception e) {
             group = "";
         }
@@ -113,6 +116,7 @@ public class Formatter {
         String dispname;
         try {
             dispname = sender.getDisplayName().replaceAll("(&([a-f0-9k-orR]))", "\u00A7$2");
+            if (dispname == null) dispname = "";
         } catch (Exception e) {
             dispname = "";
         }
@@ -224,24 +228,28 @@ public class Formatter {
             Player p = (Player) sender;
             try {
                 prefix = RoyalChat.chat.getPlayerPrefix(p).replaceAll("(&([a-f0-9k-orR]))", "\u00A7$2");
+                if (prefix == null) prefix = "";
             } catch (Exception e) {
                 prefix = "";
             }
 
             try {
                 suffix = RoyalChat.chat.getPlayerSuffix(p).replaceAll("(&([a-f0-9k-orR]))", "\u00A7$2");
+                if (suffix == null) suffix = "";
             } catch (Exception e) {
                 suffix = "";
             }
 
             try {
                 group = RoyalChat.permission.getPrimaryGroup(p).replaceAll("(&([a-f0-9k-orR]))", "\u00A7$2");
+                if (group == null) group = "";
             } catch (Exception e) {
                 group = "";
             }
 
             try {
                 dispname = p.getDisplayName().replaceAll("(&([a-f0-9k-orR]))", "\u00A7$2");
+                if (dispname == null) dispname = "";
             } catch (Exception e) {
                 dispname = "";
             }

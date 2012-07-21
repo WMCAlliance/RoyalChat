@@ -15,6 +15,7 @@ import org.royaldev.royalchat.utils.RUtils;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class RoyalChatPListener implements Listener {
 
     RoyalChat plugin;
@@ -82,6 +83,7 @@ public class RoyalChatPListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
+        // Integrate VanishNoPacket here
         String message = parseVariables(e.getPlayer(), plugin.quitMessage);
         if (message.equals("")) message = null;
         if (message != null && message.equalsIgnoreCase("no-handle")) return;

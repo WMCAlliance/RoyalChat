@@ -124,6 +124,7 @@ public class RoyalChat extends JavaPlugin {
     }
 
     public String returnAlias(World w) {
+        if (w == null) return "";
         Plugin mv = getServer().getPluginManager().getPlugin("Multiverse-Core");
         if (mv == null) return w.getName();
         MultiverseCore mvc = (MultiverseCore) mv;
