@@ -1,178 +1,220 @@
 package org.royaldev.royalchat;
 
-/*
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
- This plugin was written by jkcclemens <jkc.clemens@gmail.com>.
- If forked and not credited, alert him.
-*/
-
 import com.onarandombox.MultiverseCore.MultiverseCore;
-import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import com.palmergames.bukkit.towny.Towny;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
-import org.bukkit.World;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.RemoteConsoleCommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.royaldev.royalchat.listeners.RoyalChatPListener;
-import org.royaldev.royalchat.listeners.SpoutListener;
-import org.royaldev.royalchat.utils.Channeler;
-import org.royaldev.royalchat.utils.Formatter;
+import org.kitteh.vanish.VanishPlugin;
+import org.royaldev.royalchat.listeners.PlayerListener;
+import org.royaldev.royalchat.rcommands.CmdAdminChat;
+import org.royaldev.royalchat.rcommands.CmdChannel;
+import org.royaldev.royalchat.rcommands.CmdMe;
+import org.royaldev.royalchat.rcommands.CmdRchat;
+import org.royaldev.royalchat.rcommands.CmdRclear;
+import org.royaldev.royalchat.rcommands.CmdSay;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
+@SuppressWarnings("unused")
 public class RoyalChat extends JavaPlugin {
 
-    public String version;
+    //--- Globals ---//
 
-    public Logger log = Logger.getLogger("Minecraft");
+    public Logger log;
+    private static Logger sLog;
+    public Logger unNamedLog = Logger.getLogger("Minecraft");
+
+    private static FileConfiguration config;
 
     public static Permission permission = null;
     public static Chat chat = null;
 
-    public boolean spout;
+    private VanishPlugin vp = null;
+    public static MultiverseCore mvc = null;
+    public static Towny towny = null;
 
-    public Formatter f = new Formatter(this);
-    public Channeler c = new Channeler(this);
+    //--- Public, static methods ---//
 
-    public Metrics m = null;
+    public static Logger getNamedLogger() {
+        return sLog;
+    }
 
-    public List<Player> acd = new ArrayList<Player>();
+    public static FileConfiguration getPluginConfig() {
+        return config;
+    }
 
-    private final RoyalChatPListener playerListener = new RoyalChatPListener(this);
+    public static void sendToConsole(String s) {
+        Bukkit.getServer().getConsoleSender().sendMessage(s);
+    }
+
+    public static boolean hasAuthorization(final OfflinePlayer p, final String node) {
+        String world = Bukkit.getServer().getWorlds().get(0).getName();
+        return p instanceof RemoteConsoleCommandSender || p instanceof ConsoleCommandSender || RoyalChat.permission.has(world, p.getName(), node);
+    }
+
+    public static boolean hasAuthorization(final Player player, final String node) {
+        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || RoyalChat.permission.has(player.getWorld(), player.getName(), node);
+    }
+
+    public static boolean hasAuthorization(final CommandSender player, final String node) {
+        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || RoyalChat.permission.has(player, node);
+    }
+
+    //--- Public, non-static methods ---//
 
     public Boolean setupPermissions() {
         RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if (permissionProvider != null) {
-            permission = permissionProvider.getProvider();
-        }
+        if (permissionProvider != null) permission = permissionProvider.getProvider();
         return (permission != null);
     }
 
     public Boolean setupChat() {
         RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-        if (chatProvider != null) {
-            chat = chatProvider.getProvider();
-        }
+        if (chatProvider != null) chat = chatProvider.getProvider();
         return (chat != null);
     }
 
-    public String formatBase = null;
-    public String formatMeBase = null;
-    public String formatSay = null;
-    public String formatAdmin = null;
-    public String joinMessage = null;
-    public String quitMessage = null;
-    public String kickMessage = null;
-    public String worldMessage = null;
-    public Boolean firstWordCapital = null;
-    public Boolean highlightAtUser = null;
-    public Boolean highlightUrls = null;
-    public Boolean smokeAtUser = null;
-    public Boolean dispCounter = null;
-    public Boolean dispNotify = null;
-    public Boolean remCaps = null;
-    public Boolean useAtSign = null;
-    public Boolean interWorld = null;
-    public Boolean useChannels = null;
-    public Float capsPerc = null;
-    public Float maxRadius = null;
-
-    public void loadConfiguration() {
-        formatBase = colorize(getConfig().getString("chat-format"));
-        formatMeBase = colorize(getConfig().getString("me-format"));
-        formatSay = colorize(getConfig().getString("say-format"));
-        formatAdmin = colorize(getConfig().getString("admin-format"));
-        joinMessage = colorize(getConfig().getString("join-message"));
-        kickMessage = colorize(getConfig().getString("kick-message"));
-        quitMessage = colorize(getConfig().getString("quit-message"));
-        worldMessage = colorize(getConfig().getString("world-message"));
-        firstWordCapital = getConfig().getBoolean("first-word-capital");
-        highlightAtUser = getConfig().getBoolean("highlight-at-user");
-        highlightUrls = getConfig().getBoolean("highlight-urls");
-        smokeAtUser = getConfig().getBoolean("smoke-at-user");
-        dispCounter = getConfig().getBoolean("display-messages-counter");
-        dispNotify = getConfig().getBoolean("display-messages-achievements");
-        remCaps = getConfig().getBoolean("remove-all-caps");
-        useAtSign = getConfig().getBoolean("use-at-sign");
-        interWorld = getConfig().getBoolean("interworld");
-        useChannels = getConfig().getBoolean("use-channels");
-        capsPerc = (float) this.getConfig().getDouble("caps-removal-percent");
-        maxRadius = (float) this.getConfig().getDouble("chat-radius");
+    public boolean isVanished(Player p) {
+        if (vp == null) {
+            vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
+            return false;
+        } else return vp.getManager().isVanished(p.getName());
     }
 
-    public String colorize(String text) {
-        if (text == null) return null;
-        return text.replaceAll("(&([a-f0-9k-orR]))", "\u00A7$2");
+    public boolean isAuthorized(final OfflinePlayer p, final String node) {
+        String world = getServer().getWorlds().get(0).getName();
+        return p instanceof RemoteConsoleCommandSender || p instanceof ConsoleCommandSender || (RoyalChat.permission.has(world, p.getName(), "rcmds.admin") || RoyalChat.permission.has(world, p.getName(), node));
     }
 
-    public String returnAlias(World w) {
-        if (w == null) return "";
-        Plugin mv = getServer().getPluginManager().getPlugin("Multiverse-Core");
-        if (mv == null) return w.getName();
-        MultiverseCore mvc = (MultiverseCore) mv;
-        MultiverseWorld mvw = mvc.getMVWorldManager().getMVWorld(w);
-        return mvw.getColoredWorldString();
+    public boolean isAuthorized(final Player player, final String node) {
+        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalChat.permission.playerHas(player.getWorld(), player.getName(), "rcmds.admin") || RoyalChat.permission.playerHas(player.getWorld(), player.getName(), node));
     }
+
+    public boolean isAuthorized(final CommandSender player, final String node) {
+        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalChat.permission.has((Player) player, "rcmds.admin") || RoyalChat.permission.has(player, node));
+    }
+
+    //--- Configuration values ---//
+
+    //- Strings -//
+
+    public static String chatFormat;
+    public static String sayFormat;
+    public static String meFormat;
+    public static String adminFormat;
+
+    public static String joinMessage;
+    public static String quitMessage;
+    public static String kickMessage;
+    public static String worldMessage;
+
+    //- Booleans -//
+
+    public static Boolean firstWordCapital;
+    public static Boolean highlightMentions;
+    public static Boolean smokeOnMention;
+    public static Boolean removeAllCaps;
+    public static Boolean interWorld;
+    public static Boolean useChannels;
+
+    //- Doubles -//
+
+    public static Double capsRemovalPercent;
+    public static Double chatRadius;
+
+    //--- reloadConfigValues() ---//
+
+    /**
+     * Reloads all configuration values from the config
+     */
+    public void reloadConfigValues() {
+        if (!new File(getDataFolder() + File.separator + "config.yml").exists())
+            saveDefaultConfig();
+        config = getConfig();
+
+        //- Strings -//
+
+        chatFormat = config.getString("chat-format", "{prefix}{group}{suffix} {dispname}&r: {message}");
+        sayFormat = config.getString("say-format", "&d[Server] {message}");
+        meFormat = config.getString("me-format", "&d * &b{dispname}&d {message}");
+        adminFormat = config.getString("admin-format", "&b[Admin] {dispname}:&3 {message}");
+
+        joinMessage = config.getString("join-message", "&e{name} has joined.");
+        quitMessage = config.getString("quit-message", "&e{name} has quit.");
+        kickMessage = config.getString("kick-message", "&e{name} was kicked!");
+        worldMessage = config.getString("world-message", "&e{name} joined {world} from {fromworld}.");
+
+        //- Booleans -//
+
+        firstWordCapital = config.getBoolean("first-word-capital", false);
+        highlightMentions = config.getBoolean("highlight-at-user", true);
+        smokeOnMention = config.getBoolean("smoke-at-user", false);
+        removeAllCaps = config.getBoolean("remove-all-caps", true);
+        interWorld = config.getBoolean("interworld", true);
+        useChannels = config.getBoolean("use-channels", false);
+
+        //- Doubles -//
+
+        capsRemovalPercent = config.getDouble("caps-removal-percent", 75D);
+        chatRadius = config.getDouble("chat-radius", 0D);
+    }
+
+    //--- onEnable() ---//
 
     public void onEnable() {
 
-        if (!new File(getDataFolder() + File.separator + "config.yml").exists()) saveDefaultConfig();
+        //-- Dependency loading --//
 
-        try {
-            m = new Metrics(this);
-            m.start();
-        } catch (Exception e) {
-            getLogger().warning("Could not start metrics!");
-        }
-
-        spout = getServer().getPluginManager().isPluginEnabled("Spout");
-
-        version = this.getDescription().getVersion();
-
-        loadConfiguration();
-
-        setupChat();
         setupPermissions();
+        setupChat();
+        vp = (VanishPlugin) getServer().getPluginManager().getPlugin("VanishNoPacket");
+        mvc = (MultiverseCore) getServer().getPluginManager().getPlugin("Multiverse-Core");
+        towny = (Towny) getServer().getPluginManager().getPlugin("Towny");
 
-        PluginManager pm = this.getServer().getPluginManager();
+        //-- Configuration management --//
 
-        pm.registerEvents(playerListener, this);
-        if (spout) pm.registerEvents(new SpoutListener(this), this);
+        reloadConfigValues();
 
-        RoyalChatCommands cmdExec = new RoyalChatCommands(this);
+        //-- Set up channeling --//
 
-        getCommand("rchat").setExecutor(cmdExec);
-        getCommand("me").setExecutor(cmdExec);
-        getCommand("rclear").setExecutor(cmdExec);
-        getCommand("say").setExecutor(cmdExec);
-        getCommand("ac").setExecutor(cmdExec);
-        getCommand("ch").setExecutor(cmdExec);
+        Channeler.addAllChannels();
 
-        log.info("[RoyalChat] Version " + this.version + " initiated.");
+        //-- Logging --//
+
+        log = getLogger();
+        sLog = log;
+
+        //-- Listeners --//
+
+        PluginManager pm = getServer().getPluginManager();
+
+        pm.registerEvents(new PlayerListener(this), this);
+
+        //-- Commands --//
+
+        getCommand("rchat").setExecutor(new CmdRchat(this));
+        getCommand("say").setExecutor(new CmdSay(this));
+        getCommand("me").setExecutor(new CmdMe(this));
+        getCommand("adminchat").setExecutor(new CmdAdminChat(this));
+        getCommand("rclear").setExecutor(new CmdRclear(this));
+        getCommand("channel").setExecutor(new CmdChannel(this));
 
     }
 
-    public void onDisable() {
+    //--- onDisable ---//
 
-        log.info("[RoyalChat] Version " + this.version + " disabled.");
+    public void onDisable() {
 
     }
 

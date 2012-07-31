@@ -1,5 +1,5 @@
 # Default chat formatting
-chat-format: "{prefix}{group}{suffix} {dispname}&f: {message}"
+chat-format: "{world} {prefix}{group}{suffix} {dispname}&r: {message}"
 # Default /me formatting
 me-format: "&d * &b{dispname}&d {message}"
 # Default /say formatting
@@ -12,14 +12,6 @@ first-word-capital: false
 highlight-at-user: true
 # Poof smoke on users when they are mentioned?
 smoke-at-user: true
-# Highlight valid URLs?
-highlight-urls: true
-# Display the @ sign in front of mentioned users?
-use-at-sign: true
-# Display a counter of unread mentioned messages in SpoutCraft?
-display-messages-counter: true
-# Display an achievement when you're mentioned in SpoutCraft?
-display-messages-achievements: true
 # Remove all caps messages?
 remove-all-caps: true
 # Percent of message that must be in caps to be make it lowercase (remove-all-caps must be true)
@@ -33,19 +25,19 @@ use-channels: true
 # Define channels here
 channels:
   # Each option in the default chat channel is required for all other channels (unless otherwise stated)
+  # To join this channel: /ch default
+  # To join the channel "admin" /ch admin
   default:
-    # Long name
+    # Pretty name
     name: "Default"
-    # Name for use in /ch
-    short: "d"
     # Default? There can only be one...
     default: true
     # Chat format
     chat-format: "[d] {dispname}: {message}"
-    # Chat radius (0 makes for no limit)
+    # Chat radius (0 makes for no limit - i.e. global)
     chat-radius: 0
-    # Make the channel global? Chat in globals can always be seen, even if you're in another channel. Overrides chat-radius. Respects interworld
-    global: true
+    # Can the chat always be seen, even if you're in another channel? Overrides chat-radius. Respects interworld
+    alwaysseen: true
     # Allow interworld chat in this channel? Overrides main interworld setting.
     interworld: true
     # Use a password?
@@ -54,16 +46,13 @@ channels:
     password: "abc"
   admin:
     name: "Admin"
-    short: "a"
     default: false
     chat-format: "&b[Admin] {dispname}:&3 {message}"
     chat-radius: 0
-    global: false
+    alwaysseen: false
     interworld: true
     use-password: true
     password: "supersecret"
-    # See all messages from all channels?
-    snoop: true
 # Set messages here. Set the message to "" to disable it entirely. Set message to "no-handle" to stop RoyalChat from handling that message
 # Join messages
 join-message: "&e{name} has joined."

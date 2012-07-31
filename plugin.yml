@@ -1,39 +1,39 @@
 name: RoyalChat
 main: org.royaldev.royalchat.RoyalChat
-version: 0.0.8
+version: 0.1.0pre
 website: http://dev.royaldev.org/
 softdepend: [Vault, Towny, VanishNoPacket, Spout, Multiverse-Core]
 author: jkcclemens
 
 commands:
   rchat:
-    description: Display version number.
+    description: Reloads RoyalChat and displays version.
     usage: /<command>
-    
+
   me:
     description: Allows you to emote.
-    usage: /<command> <status>
-    
+    usage: /<command> [status]
+
   rclear:
     description: Clears the chat screen.
     aliases: [clear, clearscreen, cls]
-    usage: /<command>
+    usage: /<command> (player)
 
   say:
     description: Broadcasts a server message.
     aliases: [rsay]
     usage: /<command> [message]
 
-  ac:
+  adminchat:
     description: Talks in Admin Chat or toggles it.
-    aliases: [adminchat, a]
+    aliases: [ac, a]
     usage: /<command> (message)
 
-  ch:
+  channel:
     description: Changes your channel.
-    aliases: [channel]
-    usage: /<command> <channel> (password)
-    
+    aliases: [ch]
+    usage: /<command> [channel] (password)
+
 permissions:
   rchat.*:
     description: Allows access to all RoyalChat commands.
@@ -44,8 +44,9 @@ permissions:
       rchat.clear: true
       rchat.say: true
       rchat.caps: true
-      rchat.ac: true
+      rchat.adminchat: true
       rchat.snoop: true
+      rchat.channel: true
   rchat.snoop:
     description: Allows you to see all chat in all channels.
     default: false
@@ -64,6 +65,9 @@ permissions:
   rchat.caps:
     description: Allows you to bypass the caps filter.
     default: op
-  rchat.ac:
+  rchat.adminchat:
     description: Allows you to see messages and talk in Admin Chat.
-    
+    default: op
+  rchat.channel:
+    description: Allows you to change your channel.
+    default: op
