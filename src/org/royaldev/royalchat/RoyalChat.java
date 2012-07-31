@@ -94,15 +94,15 @@ public class RoyalChat extends JavaPlugin {
 
     public boolean isAuthorized(final OfflinePlayer p, final String node) {
         String world = getServer().getWorlds().get(0).getName();
-        return p instanceof RemoteConsoleCommandSender || p instanceof ConsoleCommandSender || (RoyalChat.permission.has(world, p.getName(), "rcmds.admin") || RoyalChat.permission.has(world, p.getName(), node));
+        return p instanceof RemoteConsoleCommandSender || p instanceof ConsoleCommandSender || RoyalChat.permission.has(world, p.getName(), node);
     }
 
     public boolean isAuthorized(final Player player, final String node) {
-        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalChat.permission.playerHas(player.getWorld(), player.getName(), "rcmds.admin") || RoyalChat.permission.playerHas(player.getWorld(), player.getName(), node));
+        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || RoyalChat.permission.has(player.getWorld(), player.getName(), node);
     }
 
     public boolean isAuthorized(final CommandSender player, final String node) {
-        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || (RoyalChat.permission.has((Player) player, "rcmds.admin") || RoyalChat.permission.has(player, node));
+        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || RoyalChat.permission.has(player, node);
     }
 
     //--- Configuration values ---//

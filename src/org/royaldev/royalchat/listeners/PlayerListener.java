@@ -61,6 +61,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void channelChat(PlayerChatEvent e) {
+        if (!RoyalChat.useChannels) return;
         if (e.isCancelled()) return;
         Player p = e.getPlayer();
         if (p == null) return;
@@ -76,12 +77,11 @@ public class PlayerListener implements Listener {
             originalMessage = RUtils.colorize(originalMessage);
         else originalMessage = RUtils.removeColorCodes(originalMessage);
 
-        if (RoyalChat.removeAllCaps && !RoyalChat.hasAuthorization(p, "rchat.caps")) {
+        if (RoyalChat.removeAllCaps && !plugin.isAuthorized(p, "rchat.caps"))
             originalMessage = RUtils.removeCaps(originalMessage);
-        }
-        if (plugin.isAuthorized(p, "rchat.color")) {
+        if (plugin.isAuthorized(p, "rchat.color"))
             originalMessage = RUtils.colorize(originalMessage);
-        } else originalMessage = RUtils.removeColorCodes(originalMessage);
+        else originalMessage = RUtils.removeColorCodes(originalMessage);
         if (RoyalChat.firstWordCapital) {
             originalMessage = originalMessage.substring(0, 1).toUpperCase() + originalMessage.substring(1);
         }
@@ -141,14 +141,14 @@ public class PlayerListener implements Listener {
 
         if (!c.getAlwaysSeen()) {
             List<Player> recipients = c.getPlayers();
-            if (!RoyalChat.interWorld) {
+            if (!c.getInterWorld()) {
                 for (Player pl : c.getPlayers()) {
                     if (pl.equals(p)) continue;
                     if (!pl.getWorld().equals(p.getWorld())) recipients.remove(p);
                 }
             }
 
-            if (RoyalChat.chatRadius > 0D) {
+            if (c.getChatRadius() > 0D) {
                 for (Player pl : c.getPlayers()) {
                     if (pl.equals(p)) continue;
                     if (!pl.getWorld().equals(p.getWorld())) {
@@ -156,10 +156,11 @@ public class PlayerListener implements Listener {
                         continue;
                     }
                     double distance = p.getLocation().distance(pl.getLocation());
-                    if (distance > RoyalChat.chatRadius) recipients.remove(pl);
+                    if (distance > c.getChatRadius()) recipients.remove(pl);
                 }
             }
             c.sendMessage(newMessage, recipients); // Only send to just the channel if the channel isn't an always-seen
+            plugin.getServer().broadcast(newMessage, "rchat.snoop"); // Snoopers :3
         } else {
             // If it's an always-seen, let's send it via vanilla methods
             // However, we must avoid literal in vanilla
@@ -190,20 +191,15 @@ public class PlayerListener implements Listener {
         String dispName = (p.getDisplayName() == null) ? p.getName() : p.getDisplayName();
         newMessage = newMessage.replaceAll("(?i)\\{dispname\\}", dispName);
         newMessage = newMessage.replaceAll("(?i)\\{world\\}", MultiverseUtils.getMVWorldName(p.getWorld()));
-        if (plugin.isAuthorized(p, "rchat.color"))
-            newMessage = RUtils.colorize(newMessage);
-        else newMessage = RUtils.removeColorCodes(newMessage);
 
         String group = RoyalChat.permission.getPrimaryGroup(p);
         if (group == null) group = "";
-
-        newMessage = newMessage.replace("%", "%%");
 
         newMessage = newMessage.replaceAll("(?i)\\{prefix\\}", RUtils.getPrefix(p));
         newMessage = newMessage.replaceAll("(?i)\\{suffix\\}", RUtils.getSuffix(p));
         newMessage = newMessage.replaceAll("(?i)\\{group\\}", RUtils.colorize(group));
 
-        originalMessage = (plugin.isAuthorized(p, "rchat.colors")) ? RUtils.colorize(originalMessage) : RUtils.removeColorCodes(originalMessage);
+        originalMessage = (plugin.isAuthorized(p, "rchat.color")) ? RUtils.colorize(originalMessage) : RUtils.removeColorCodes(originalMessage);
         if (RoyalChat.removeAllCaps && !plugin.isAuthorized(p, "rchat.caps"))
             originalMessage = RUtils.removeCaps(originalMessage);
         if (RoyalChat.firstWordCapital)
@@ -254,6 +250,8 @@ public class PlayerListener implements Listener {
 
         newMessage = newMessage.replaceAll("(?i)\\{message\\}", originalMessage);
 
+        newMessage = newMessage.replace("%", "%%");
+
         e.setFormat(newMessage);
         e.setMessage(originalMessage);
 
@@ -293,19 +291,27 @@ public class PlayerListener implements Listener {
         if (RoyalChat.useChannels && Channeler.getPlayerChannel(p) == null)
             if (!Channeler.addToDefaultChannel(p))
                 RoyalChat.getNamedLogger().warning("There is no default channel set! Chat may look odd.");
-        e.setJoinMessage(RUtils.colorize(replaceVars(RoyalChat.joinMessage, p)));
+        String message = replaceVars(RoyalChat.joinMessage, p);
+        if (message.equalsIgnoreCase("no-handle")) return;
+        if (message.equals("")) message = null;
+        e.setJoinMessage(RUtils.colorize(message));
     }
 
     @EventHandler
     public void onKick(PlayerKickEvent e) {
         String message = RUtils.colorize(replaceVars(RoyalChat.kickMessage, e.getPlayer()));
         message = message.replaceAll("(?i)\\{reason\\}", e.getReason());
+        if (message.equalsIgnoreCase("no-handle")) return;
+        if (message.equals("")) message = null;
         e.setLeaveMessage(message);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        e.setQuitMessage(RUtils.colorize(replaceVars(RoyalChat.quitMessage, e.getPlayer())));
+        String message = RUtils.colorize(replaceVars(RoyalChat.quitMessage, e.getPlayer()));
+        if (message.equalsIgnoreCase("no-handle")) return;
+        if (message.equals("")) message = null;
+        e.setQuitMessage(message);
     }
 
     @EventHandler
@@ -315,6 +321,8 @@ public class PlayerListener implements Listener {
         message = message.replaceAll("(?i)\\{fromworld\\}", MultiverseUtils.getMVWorldName(e.getFrom().getWorld()));
         message = message.replaceAll("(?i)\\{world\\}", MultiverseUtils.getMVWorldName(e.getTo().getWorld()));
         message = RUtils.colorize(replaceVars(message, e.getPlayer()));
+        if (message.equalsIgnoreCase("no-handle")) return;
+        if (message.equals("")) message = null;
         plugin.getServer().broadcastMessage(message);
     }
 

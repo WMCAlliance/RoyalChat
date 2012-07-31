@@ -58,6 +58,7 @@ public class RUtils {
      * @return String with processed color codes
      */
     public static String colorize(String original) {
+        if (original == null) return original;
         return original.replaceAll("(?i)&([a-f0-9k-or])", "\u00a7$1");
     }
 
