@@ -43,7 +43,7 @@ public class PlayerListener implements Listener {
 
         newMessage = newMessage.replaceAll("(?i)\\{prefix\\}", RUtils.getPrefix(p));
         newMessage = newMessage.replaceAll("(?i)\\{suffix\\}", RUtils.getSuffix(p));
-        newMessage = newMessage.replaceAll("(?i)\\{group\\}", group);
+        newMessage = newMessage.replaceAll("(?i)\\{group\\}", RUtils.colorize(group));
         return newMessage;
     }
 
@@ -201,7 +201,7 @@ public class PlayerListener implements Listener {
 
         newMessage = newMessage.replaceAll("(?i)\\{prefix\\}", RUtils.getPrefix(p));
         newMessage = newMessage.replaceAll("(?i)\\{suffix\\}", RUtils.getSuffix(p));
-        newMessage = newMessage.replaceAll("(?i)\\{group\\}", group);
+        newMessage = newMessage.replaceAll("(?i)\\{group\\}", RUtils.colorize(group));
 
         originalMessage = (plugin.isAuthorized(p, "rchat.colors")) ? RUtils.colorize(originalMessage) : RUtils.removeColorCodes(originalMessage);
         if (RoyalChat.removeAllCaps && !plugin.isAuthorized(p, "rchat.caps"))
