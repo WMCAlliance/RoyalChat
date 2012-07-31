@@ -25,7 +25,6 @@
                 <pathelement location="lib/Vault.jar"/>
                 <pathelement location="lib/VanishNoPacket.jar"/>
                 <pathelement location="lib/Towny.jar"/>
-                <pathelement location="lib/spoutplugin-dev-SNAPSHOT.jar"/>
                 <pathelement location="lib/Multiverse-Core-2.4.jar"/>
             </classpath>
         </javac>
