@@ -328,7 +328,7 @@ public class PlayerListener implements Listener {
         message = message.replaceAll("(?i)\\{world\\}", MultiverseUtils.getMVWorldName(e.getTo().getWorld()));
         message = RUtils.colorize(replaceVars(message, e.getPlayer()));
         if (message.equalsIgnoreCase("no-handle")) return;
-        if (message.equals("")) message = null;
+        if (message.equals("")) return;
         plugin.getServer().broadcastMessage(message);
     }
 
