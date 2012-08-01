@@ -220,9 +220,16 @@ public class RUtils {
         return lastColor;
     }
 
-    public static String sanitizeInput(String s) {
+    /**
+     * Sanitizes chat input ($, %, \) for minimal breakage.
+     *
+     * @param s       String to sanitize
+     * @param vanilla Set to true if this is a vanilla chat message (will fix %)
+     * @return Sanitized string
+     */
+    public static String sanitizeInput(String s, boolean vanilla) {
         s = s.replace("\\", "\\\\");
-        s = s.replace("%", "%%");
+        if (vanilla) s = s.replace("%", "%%");
         s = s.replace("$", "\\$");
         return s;
     }

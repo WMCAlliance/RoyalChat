@@ -68,11 +68,11 @@ public class PlayerListener implements Listener {
         Channel c = Channeler.getPlayerChannel(p);
         if (c == null) return;
         String newMessage = RUtils.colorize(c.getChatFormat());
-        newMessage = RUtils.sanitizeInput(newMessage);
+        newMessage = RUtils.sanitizeInput(newMessage, false);
         newMessage = RUtils.replaceTownyVars(newMessage, p);
         newMessage = replaceVars(newMessage, p);
         String originalMessage = e.getMessage();
-        originalMessage = RUtils.sanitizeInput(originalMessage);
+        originalMessage = RUtils.sanitizeInput(originalMessage, false);
         if (!plugin.isAuthorized(p, "rchat.color") || !c.getColorAllowed())
             originalMessage = RUtils.removeColorCodes(originalMessage);
         else if (plugin.isAuthorized(p, "rchat.color"))
@@ -187,9 +187,9 @@ public class PlayerListener implements Listener {
         Player p = e.getPlayer();
         if (p == null) return;
         String newMessage = RUtils.colorize(RoyalChat.chatFormat);
-        newMessage = RUtils.sanitizeInput(newMessage);
+        newMessage = RUtils.sanitizeInput(newMessage, true);
         String originalMessage = e.getMessage();
-        originalMessage = RUtils.sanitizeInput(originalMessage);
+        originalMessage = RUtils.sanitizeInput(originalMessage, true);
         newMessage = RUtils.colorize(RUtils.replaceTownyVars(newMessage, p));
         newMessage = newMessage.replaceAll("(?i)\\{name\\}", p.getName());
         String dispName = (p.getDisplayName() == null) ? p.getName() : p.getDisplayName();
