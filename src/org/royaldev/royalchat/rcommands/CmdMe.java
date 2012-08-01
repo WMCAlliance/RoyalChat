@@ -19,7 +19,9 @@ public class CmdMe implements CommandExecutor {
     private String formatMe(String originalMessage, CommandSender cs) {
         if (originalMessage == null) originalMessage = "";
         if (cs == null) throw new NullPointerException("cs can't be null!");
+        originalMessage = RUtils.sanitizeInput(originalMessage);
         String newMessage = RUtils.colorize(RoyalChat.meFormat);
+        newMessage = RUtils.sanitizeInput(newMessage);
         newMessage = RUtils.colorize(RUtils.replaceTownyVars(newMessage, cs));
         newMessage = newMessage.replaceAll("(?i)\\{name\\}", cs.getName());
         newMessage = newMessage.replaceAll("(?i)\\{dispname\\}", ((cs instanceof Player) ? ((Player) cs).getDisplayName() : cs.getName()));

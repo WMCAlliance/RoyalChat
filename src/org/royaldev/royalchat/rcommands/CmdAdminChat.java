@@ -55,7 +55,9 @@ public class CmdAdminChat implements CommandExecutor {
     public static String formatAdminChat(String originalMessage, CommandSender sender) throws NullPointerException {
         if (originalMessage == null) originalMessage = "";
         if (sender == null) throw new NullPointerException("sender can't be null!");
+        originalMessage = RUtils.sanitizeInput(originalMessage);
         String newMessage = RUtils.colorize(RoyalChat.adminFormat);
+        newMessage = RUtils.sanitizeInput(newMessage);
         newMessage = RUtils.colorize(RUtils.replaceTownyVars(newMessage, sender));
         newMessage = newMessage.replaceAll("(?i)\\{name\\}", sender.getName());
         newMessage = newMessage.replaceAll("(?i)\\{dispname\\}", ((sender instanceof Player) ? ((Player) sender).getDisplayName() : sender.getName()));

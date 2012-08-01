@@ -219,4 +219,11 @@ public class RUtils {
         }
         return lastColor;
     }
+
+    public static String sanitizeInput(String s) {
+        s = s.replace("\\", "\\\\");
+        s = s.replace("%", "%%");
+        s = s.replace("$", "\\$");
+        return s;
+    }
 }

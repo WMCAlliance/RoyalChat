@@ -68,9 +68,11 @@ public class PlayerListener implements Listener {
         Channel c = Channeler.getPlayerChannel(p);
         if (c == null) return;
         String newMessage = RUtils.colorize(c.getChatFormat());
+        newMessage = RUtils.sanitizeInput(newMessage);
         newMessage = RUtils.replaceTownyVars(newMessage, p);
         newMessage = replaceVars(newMessage, p);
         String originalMessage = e.getMessage();
+        originalMessage = RUtils.sanitizeInput(originalMessage);
         if (!plugin.isAuthorized(p, "rchat.color") || !c.getColorAllowed())
             originalMessage = RUtils.removeColorCodes(originalMessage);
         else if (plugin.isAuthorized(p, "rchat.color"))
@@ -185,7 +187,9 @@ public class PlayerListener implements Listener {
         Player p = e.getPlayer();
         if (p == null) return;
         String newMessage = RUtils.colorize(RoyalChat.chatFormat);
+        newMessage = RUtils.sanitizeInput(newMessage);
         String originalMessage = e.getMessage();
+        originalMessage = RUtils.sanitizeInput(originalMessage);
         newMessage = RUtils.colorize(RUtils.replaceTownyVars(newMessage, p));
         newMessage = newMessage.replaceAll("(?i)\\{name\\}", p.getName());
         String dispName = (p.getDisplayName() == null) ? p.getName() : p.getDisplayName();
@@ -299,6 +303,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onKick(PlayerKickEvent e) {
+        if (e.isCancelled()) return;
         String message = RUtils.colorize(replaceVars(RoyalChat.kickMessage, e.getPlayer()));
         message = message.replaceAll("(?i)\\{reason\\}", e.getReason());
         if (message.equalsIgnoreCase("no-handle")) return;
@@ -316,6 +321,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onSwitchWorld(PlayerTeleportEvent e) {
+        if (e.isCancelled()) return;
         if (e.getFrom().getWorld().equals(e.getTo().getWorld())) return;
         String message = RoyalChat.worldMessage;
         message = message.replaceAll("(?i)\\{fromworld\\}", MultiverseUtils.getMVWorldName(e.getFrom().getWorld()));
