@@ -139,9 +139,16 @@ public class RoyalChat extends JavaPlugin {
      * Reloads all configuration values from the config
      */
     public void reloadConfigValues() {
+
+        //- Default config loading -//
+
         if (!new File(getDataFolder() + File.separator + "config.yml").exists())
             saveDefaultConfig();
         config = getConfig();
+
+        //- Channel loading -//
+
+        Channeler.addNewChannels();
 
         //- Strings -//
 

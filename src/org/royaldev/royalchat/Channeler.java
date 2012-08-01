@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Channeler {
 
-    private static final ConfigurationSection channelConfSec = RoyalChat.getPluginConfig().getConfigurationSection("channels");
+    private static ConfigurationSection channelConfSec = RoyalChat.getPluginConfig().getConfigurationSection("channels");
     private static final List<Channel> channels = new ArrayList<Channel>();
 
     /**
@@ -29,6 +29,37 @@ public class Channeler {
                 channels.add(c);
             }
         }
+    }
+
+    /**
+     * Adds new channels from the configuration.
+     * <p/>
+     * Implicitly calls {@link #reload()}.
+     *
+     * @return Number of new channels added
+     */
+    public static int addNewChannels() {
+        reload();
+        int added = 0;
+        for (String key : channelConfSec.getKeys(false)) {
+            ConfigurationSection cs = channelConfSec.getConfigurationSection(key);
+            if (getChannel(key) != null) continue;
+            Channel c = new Channel(cs);
+            synchronized (channels) {
+                channels.add(c);
+            }
+            added++;
+        }
+        return added;
+    }
+
+    /**
+     * Reloads the ConfigurationSection for the Channeler.
+     * <p/>
+     * Note that this does nothing if the config was not reloaded in the plugin interface first.
+     */
+    public static void reload() {
+        channelConfSec = RoyalChat.getPluginConfig().getConfigurationSection("channels");
     }
 
     /**
@@ -64,7 +95,7 @@ public class Channeler {
     /**
      * Checks to see if a player is in a channel.
      * <p/>
-     * More efficient method is to {@link org.royaldev.royalchat.Channeler#getPlayerChannel(org.bukkit.entity.Player)} and check if the result is null.
+     * More efficient method is to call {@link #getPlayerChannel(org.bukkit.entity.Player)} and check if the result is null.
      *
      * @param p Player to check for
      * @return true if player is in a channel, false otherwise
@@ -80,7 +111,9 @@ public class Channeler {
     }
 
     /**
-     * Attempts to add the player to the default channel
+     * Attempts to add the player to the default channel.
+     * <p/>
+     * Note that if there is more than one default channel (why?), player will be added to first one encountered.
      *
      * @param p Player to add
      * @return true if player was added, false if there is no default channel (!)

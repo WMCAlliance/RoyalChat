@@ -32,6 +32,8 @@ public class Channel {
 
     /**
      * Constructor for a chat channel.
+     * <p/>
+     * If there are missing option in values, they will default to the error channel values.
      *
      * @param values ConfigurationSection containing all needed values for the channel
      */
@@ -51,6 +53,8 @@ public class Channel {
 
     /**
      * Constructor for a chat channel.
+     * <p/>
+     * If one or more of these values is null, there is a good change for NPEs, as they will not default to anything.
      *
      * @param name        Name of channel
      * @param chatFormat  Chat format of channel
@@ -251,6 +255,21 @@ public class Channel {
             if (!isMember(p)) continue;
             p.sendMessage(message);
         }
+    }
+
+    /**
+     * Checks to see if another object is equal to this one.
+     * <p/>
+     * Verifies this by name.
+     *
+     * @param o Object to check equality with
+     * @return If objects are the same
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Channel)) return false;
+        Channel c = (Channel) o;
+        return c.getName().equals(name);
     }
 
 }

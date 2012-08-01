@@ -47,6 +47,10 @@ permissions:
       rchat.adminchat: true
       rchat.snoop: true
       rchat.channel: true
+      rchat.color: true
+  rchat.color:
+    description: Allows you to use colors in chat.
+    default: op
   rchat.snoop:
     description: Allows you to see all chat in all channels.
     default: false
