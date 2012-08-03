@@ -22,8 +22,10 @@ import org.royaldev.royalchat.rcommands.CmdMe;
 import org.royaldev.royalchat.rcommands.CmdRchat;
 import org.royaldev.royalchat.rcommands.CmdRclear;
 import org.royaldev.royalchat.rcommands.CmdSay;
+import org.royaldev.royalchat.rcommands.Metrics;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 @SuppressWarnings("unused")
@@ -43,6 +45,8 @@ public class RoyalChat extends JavaPlugin {
     private VanishPlugin vp = null;
     public static MultiverseCore mvc = null;
     public static Towny towny = null;
+
+    private Metrics m = null;
 
     //--- Public, static methods ---//
 
@@ -216,6 +220,15 @@ public class RoyalChat extends JavaPlugin {
         getCommand("adminchat").setExecutor(new CmdAdminChat(this));
         getCommand("rclear").setExecutor(new CmdRclear(this));
         getCommand("channel").setExecutor(new CmdChannel(this));
+
+        //-- Start Hidendra's Metrics --//
+
+        try {
+            m = new Metrics(this);
+            m.start();
+        } catch (IOException e) {
+            log.warning("Could not start Metrics!");
+        }
 
     }
 
