@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -48,7 +48,7 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void adminChat(PlayerChatEvent e) {
+    public void adminChat(AsyncPlayerChatEvent e) {
         if (e.isCancelled()) return;
         if (e.getPlayer() == null) return;
         if (!CmdAdminChat.hasAdminChatOn(e.getPlayer())) return;
@@ -60,7 +60,7 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
-    public void channelChat(PlayerChatEvent e) {
+    public void channelChat(AsyncPlayerChatEvent e) {
         if (!RoyalChat.useChannels) return;
         if (e.isCancelled()) return;
         Player p = e.getPlayer();
@@ -182,7 +182,7 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOW)
-    public void normalChat(PlayerChatEvent e) {
+    public void normalChat(AsyncPlayerChatEvent e) {
         if (e.isCancelled()) return;
         Player p = e.getPlayer();
         if (p == null) return;
