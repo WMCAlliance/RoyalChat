@@ -95,6 +95,7 @@ public class RUtils {
      * @return Prefix or empty string
      */
     public static String getPrefix(CommandSender cs) {
+        if (cs == null) return "";
         if (!(cs instanceof Player)) return "";
         Player p = (Player) cs;
         String prefix = RoyalChat.chat.getPlayerPrefix(p);
@@ -114,6 +115,7 @@ public class RUtils {
      * @return Suffix or empty string
      */
     public static String getSuffix(CommandSender cs) {
+        if (cs == null) return "";
         if (!(cs instanceof Player)) return "";
         Player p = (Player) cs;
         String suffix = RoyalChat.chat.getPlayerSuffix(p);
