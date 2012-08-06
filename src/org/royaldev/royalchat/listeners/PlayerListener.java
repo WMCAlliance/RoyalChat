@@ -254,8 +254,6 @@ public class PlayerListener implements Listener {
 
         newMessage = newMessage.replaceAll("(?i)\\{message\\}", originalMessage);
 
-        newMessage = newMessage.replace("%", "%%");
-
         e.setFormat(newMessage);
         e.setMessage(originalMessage);
 
