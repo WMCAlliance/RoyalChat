@@ -48,7 +48,7 @@ public class RUtils {
             sb.append(array[i]);
             sb.append(" ");
         }
-        return sb.toString();
+        return sb.substring(0, sb.length() - 1);
     }
 
     /**
