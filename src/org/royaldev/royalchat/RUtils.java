@@ -98,7 +98,9 @@ public class RUtils {
         if (cs == null) return "";
         if (!(cs instanceof Player)) return "";
         Player p = (Player) cs;
+        if (RoyalChat.chat == null) return "";
         String prefix = RoyalChat.chat.getPlayerPrefix(p);
+        if (RoyalChat.permission == null) return "";
         String group = RoyalChat.permission.getPrimaryGroup(p);
         if (group == null) return "";
         if (prefix == null) prefix = "";
@@ -118,7 +120,9 @@ public class RUtils {
         if (cs == null) return "";
         if (!(cs instanceof Player)) return "";
         Player p = (Player) cs;
+        if (RoyalChat.chat == null) return "";
         String suffix = RoyalChat.chat.getPlayerSuffix(p);
+        if (RoyalChat.permission == null) return "";
         String group = RoyalChat.permission.getPrimaryGroup(p);
         if (group == null) return "";
         if (suffix == null) suffix = "";
