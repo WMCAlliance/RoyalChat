@@ -130,4 +130,36 @@ public class Channeler {
         return false;
     }
 
+    /**
+     * Adds a channel to the channel list.
+     *
+     * @param c Channel to add
+     * @return true if added, false if already in list
+     * @throws IllegalArgumentException If channel is null
+     */
+    public static boolean addChannel(Channel c) throws IllegalArgumentException {
+        if (c == null) throw new IllegalArgumentException("Channel cannot be null!");
+        synchronized (channels) {
+            if (channels.contains(c)) return false;
+            channels.add(c);
+        }
+        return true;
+    }
+
+    /**
+     * Removes a channel from the channel list.
+     *
+     * @param c Channel to remove.
+     * @return true if channel removed, false if channel was not in list
+     * @throws IllegalArgumentException If channel is null
+     */
+    public static boolean removeChannel(Channel c) throws IllegalArgumentException {
+        if (c == null) throw new IllegalArgumentException("Channel cannot be null!");
+        synchronized (channels) {
+            if (!channels.contains(c)) return false;
+            channels.remove(c);
+        }
+        return true;
+    }
+
 }
