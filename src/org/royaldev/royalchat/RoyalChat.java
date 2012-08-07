@@ -74,18 +74,6 @@ public class RoyalChat extends JavaPlugin {
 
     //--- Public, non-static methods ---//
 
-    public Boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if (permissionProvider != null) permission = permissionProvider.getProvider();
-        return (permission != null);
-    }
-
-    public Boolean setupChat() {
-        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-        if (chatProvider != null) chat = chatProvider.getProvider();
-        return (chat != null);
-    }
-
     public boolean isVanished(Player p) {
         if (vp == null) {
             vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
@@ -104,6 +92,20 @@ public class RoyalChat extends JavaPlugin {
 
     public boolean isAuthorized(final CommandSender player, final String node) {
         return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || RoyalChat.permission.has(player, node);
+    }
+
+    //--- Private methods ---//
+
+    private Boolean setupPermissions() {
+        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        if (permissionProvider != null) permission = permissionProvider.getProvider();
+        return (permission != null);
+    }
+
+    private Boolean setupChat() {
+        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+        if (chatProvider != null) chat = chatProvider.getProvider();
+        return (chat != null);
     }
 
     //--- Configuration values ---//
