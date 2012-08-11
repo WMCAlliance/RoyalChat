@@ -36,6 +36,8 @@ public class RoyalChat extends JavaPlugin {
     private static Logger sLog;
     public Logger unNamedLog = Logger.getLogger("Minecraft");
 
+    public static RoyalChat instance;
+
     private static FileConfiguration config;
 
     public static Permission permission = null;
@@ -184,6 +186,8 @@ public class RoyalChat extends JavaPlugin {
     //--- onEnable() ---//
 
     public void onEnable() {
+
+        instance = this;
 
         //-- Dependency loading --//
 
