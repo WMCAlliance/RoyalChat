@@ -100,8 +100,14 @@ public class RUtils {
         Player p = (Player) cs;
         String prefix = "";
         String group = "";
-        if (RoyalChat.chat != null) prefix = RoyalChat.chat.getPlayerPrefix(p);
-        if (RoyalChat.permission != null) group = RoyalChat.permission.getPrimaryGroup(p);
+        try {
+            if (RoyalChat.chat != null) prefix = RoyalChat.chat.getPlayerPrefix(p);
+            if (RoyalChat.permission != null)
+                group = RoyalChat.permission.getPrimaryGroup(p);
+        } catch (UnsupportedOperationException e) {
+            prefix = "";
+            group = "";
+        }
         if (group == null) return "";
         if (prefix == null) prefix = "";
         String pb = RoyalChat.getPluginConfig().getString("pbukkit.prefixes." + group);
@@ -122,8 +128,14 @@ public class RUtils {
         Player p = (Player) cs;
         String suffix = "";
         String group = "";
-        if (RoyalChat.chat != null) suffix = RoyalChat.chat.getPlayerSuffix(p);
-        if (RoyalChat.permission != null) group = RoyalChat.permission.getPrimaryGroup(p);
+        try {
+            if (RoyalChat.chat != null) suffix = RoyalChat.chat.getPlayerSuffix(p);
+            if (RoyalChat.permission != null)
+                group = RoyalChat.permission.getPrimaryGroup(p);
+        } catch (UnsupportedOperationException e) {
+            group = "";
+            suffix = "";
+        }
         if (group == null) return "";
         if (suffix == null) suffix = "";
         String pb = RoyalChat.getPluginConfig().getString("pbukkit.suffixes." + group);

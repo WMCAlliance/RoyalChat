@@ -201,7 +201,12 @@ public class PlayerListener implements Listener {
         newMessage = newMessage.replaceAll("(?i)\\{dispname\\}", dispName);
         newMessage = newMessage.replaceAll("(?i)\\{world\\}", MultiverseUtils.getMVWorldName(p.getWorld()));
 
-        String group = RoyalChat.permission.getPrimaryGroup(p);
+        String group;
+        try {
+            group = RoyalChat.permission.getPrimaryGroup(p);
+        } catch (UnsupportedOperationException e1) {
+            group = "";
+        }
         if (group == null) group = "";
 
         newMessage = newMessage.replaceAll("(?i)\\{prefix\\}", RUtils.getPrefix(p));
