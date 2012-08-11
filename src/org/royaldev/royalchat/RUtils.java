@@ -108,7 +108,7 @@ public class RUtils {
             prefix = "";
             group = "";
         }
-        if (group == null) return "";
+        if (group == null) group = "";
         if (prefix == null) prefix = "";
         String pb = RoyalChat.instance.getConfig().getString("pbukkit.prefixes." + group, "");
         prefix = prefix + pb;
@@ -135,7 +135,7 @@ public class RUtils {
             group = "";
             suffix = "";
         }
-        if (group == null) return "";
+        if (group == null) group = "";
         if (suffix == null) suffix = "";
         String pb = RoyalChat.instance.getConfig().getString("pbukkit.suffixes." + group, "");
         suffix = suffix + pb;
