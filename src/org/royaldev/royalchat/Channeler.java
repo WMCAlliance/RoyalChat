@@ -1,10 +1,13 @@
 package org.royaldev.royalchat;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Contains generic, static, Channel methods.
@@ -28,6 +31,34 @@ public class Channeler {
             synchronized (channels) {
                 channels.add(c);
             }
+        }
+    }
+
+    /**
+     * Reloads all channels
+     */
+    public static void reloadAllChannels() {
+        Map<String, List<String>> members = new HashMap<String, List<String>>();
+        synchronized (channels) {
+            for (Channel c : channels) members.put(c.getName(), c.getMembers());
+        }
+        removeAllChannels();
+        addAllChannels();
+        synchronized (channels) {
+            for (Channel c : channels) {
+                if (members.get(c.getName()) == null) continue;
+                for (String s : members.get(c.getName()))
+                    c.addMember(Bukkit.getServer().getOfflinePlayer(s));
+            }
+        }
+    }
+
+    /**
+     * Removes all channels. Should follow with {@link #addAllChannels()}.
+     */
+    public static void removeAllChannels() {
+        synchronized (channels) {
+            channels.clear();
         }
     }
 

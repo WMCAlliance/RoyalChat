@@ -151,7 +151,8 @@ public class RoyalChat extends JavaPlugin {
 
         //- Channel loading -//
 
-        Channeler.addNewChannels();
+        Channeler.reload();
+        Channeler.reloadAllChannels();
 
         //- Strings -//
 

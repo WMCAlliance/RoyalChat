@@ -1,6 +1,7 @@
 package org.royaldev.royalchat;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -206,7 +207,7 @@ public class Channel {
      *
      * @param p Player to add to this channel
      */
-    public void addMember(Player p) {
+    public void addMember(OfflinePlayer p) {
         if (p == null) return;
         synchronized (members) {
             members.add(p.getName());
