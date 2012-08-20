@@ -33,12 +33,9 @@ public class RoyalChat extends JavaPlugin {
     //--- Globals ---//
 
     public Logger log;
-    private static Logger sLog;
     public Logger unNamedLog = Logger.getLogger("Minecraft");
 
     public static RoyalChat instance;
-
-    private static FileConfiguration config;
 
     public static Permission permission = null;
     public static Chat chat = null;
@@ -48,14 +45,6 @@ public class RoyalChat extends JavaPlugin {
     public static Towny towny = null;
 
     //--- Public, static methods ---//
-
-    public static Logger getNamedLogger() {
-        return sLog;
-    }
-
-    public static FileConfiguration getPluginConfig() {
-        return config;
-    }
 
     public static void sendToConsole(String s) {
         Bukkit.getServer().getConsoleSender().sendMessage(s);
@@ -149,7 +138,7 @@ public class RoyalChat extends JavaPlugin {
 
         if (!new File(getDataFolder() + File.separator + "config.yml").exists())
             saveDefaultConfig();
-        config = getConfig();
+        FileConfiguration config = getConfig();
 
         //- Channel loading -//
 
@@ -208,7 +197,6 @@ public class RoyalChat extends JavaPlugin {
         //-- Logging --//
 
         log = getLogger();
-        sLog = log;
 
         //-- Listeners --//
 

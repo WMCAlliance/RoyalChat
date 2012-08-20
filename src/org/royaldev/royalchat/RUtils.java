@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 @SuppressWarnings("unused")
 public class RUtils {
 
-    private static Logger log = RoyalChat.getNamedLogger();
+    private static Logger log = RoyalChat.instance.log;
 
     /**
      * Displays a message to player and tells console that player was denied access.
@@ -110,7 +110,7 @@ public class RUtils {
         }
         if (group == null) group = "";
         if (prefix == null) prefix = "";
-        String pb = RoyalChat.instance.getConfig().getString("pbukkit.prefixes." + group, "");
+        String pb = (!group.equals("")) ? RoyalChat.instance.getConfig().getString("pbukkit.prefixes." + group, "") : "";
         prefix = prefix + pb;
         return colorize(prefix);
     }
@@ -137,7 +137,7 @@ public class RUtils {
         }
         if (group == null) group = "";
         if (suffix == null) suffix = "";
-        String pb = RoyalChat.instance.getConfig().getString("pbukkit.suffixes." + group, "");
+        String pb = (!group.equals("")) ? RoyalChat.instance.getConfig().getString("pbukkit.suffixes." + group, "") : "";
         suffix = suffix + pb;
         return colorize(suffix);
     }

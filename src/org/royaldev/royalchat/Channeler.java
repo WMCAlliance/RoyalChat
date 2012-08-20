@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class Channeler {
 
-    private static ConfigurationSection channelConfSec = RoyalChat.getPluginConfig().getConfigurationSection("channels");
+    private static ConfigurationSection channelConfSec = RoyalChat.instance.getConfig().getConfigurationSection("channels");
     private static final List<Channel> channels = new ArrayList<Channel>();
 
     /**
@@ -90,7 +90,7 @@ public class Channeler {
      * Note that this does nothing if the config was not reloaded in the plugin interface first.
      */
     public static void reload() {
-        channelConfSec = RoyalChat.getPluginConfig().getConfigurationSection("channels");
+        channelConfSec = RoyalChat.instance.getConfig().getConfigurationSection("channels");
     }
 
     /**
