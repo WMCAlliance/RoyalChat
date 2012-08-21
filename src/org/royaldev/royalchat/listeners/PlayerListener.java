@@ -331,6 +331,7 @@ public class PlayerListener implements Listener {
     public void onSwitchWorld(PlayerTeleportEvent e) {
         if (e.isCancelled()) return;
         if (e.getFrom().getWorld().equals(e.getTo().getWorld())) return;
+        if (plugin.isVanished(e.getPlayer())) return;
         String message = RoyalChat.worldMessage;
         message = message.replaceAll("(?i)\\{fromworld\\}", MultiverseUtils.getMVWorldName(e.getFrom().getWorld()));
         message = message.replaceAll("(?i)\\{world\\}", MultiverseUtils.getMVWorldName(e.getTo().getWorld()));
