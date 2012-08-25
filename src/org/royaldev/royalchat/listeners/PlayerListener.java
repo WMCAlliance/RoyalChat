@@ -89,7 +89,7 @@ public class PlayerListener implements Listener {
         if (plugin.isAuthorized(p, "rchat.color"))
             originalMessage = RUtils.colorize(originalMessage);
         else originalMessage = RUtils.removeColorCodes(originalMessage);
-        if (RoyalChat.firstWordCapital) {
+        if (RoyalChat.firstWordCapital && !RUtils.firstWordIsLink(originalMessage)) {
             originalMessage = originalMessage.substring(0, 1).toUpperCase() + originalMessage.substring(1);
         }
 
@@ -216,7 +216,7 @@ public class PlayerListener implements Listener {
         originalMessage = (plugin.isAuthorized(p, "rchat.color")) ? RUtils.colorize(originalMessage) : RUtils.removeColorCodes(originalMessage);
         if (RoyalChat.removeAllCaps && !plugin.isAuthorized(p, "rchat.caps"))
             originalMessage = RUtils.removeCaps(originalMessage);
-        if (RoyalChat.firstWordCapital)
+        if (RoyalChat.firstWordCapital && !RUtils.firstWordIsLink(originalMessage))
             originalMessage = originalMessage.substring(0, 1).toUpperCase() + originalMessage.substring(1);
 
         for (Player pl : plugin.getServer().getOnlinePlayers()) {

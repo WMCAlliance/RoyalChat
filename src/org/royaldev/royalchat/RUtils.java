@@ -249,4 +249,10 @@ public class RUtils {
         s = s.replace("$", "\\$");
         return s;
     }
+
+    public static boolean firstWordIsLink(String message) {
+        if (message == null || message.trim().equals("")) return false;
+        Pattern p = Pattern.compile("^(?:([hH]ttps?)://)?([-\\w_\\.]{2,}\\.[a-z]{2,3})(/\\S*)?$"); // Minecraft's regex checker with caps allowed
+        return p.matcher(message.split(" ")[0]).matches();
+    }
 }

@@ -28,7 +28,7 @@ public class CmdSay implements CommandExecutor {
         originalMessage = (plugin.isAuthorized(cs, "rchat.colors")) ? RUtils.colorize(originalMessage) : RUtils.removeColorCodes(originalMessage);
         if (RoyalChat.removeAllCaps && !RoyalChat.hasAuthorization(cs, "rchat.caps"))
             originalMessage = RUtils.removeCaps(originalMessage);
-        if (RoyalChat.firstWordCapital)
+        if (RoyalChat.firstWordCapital && !RUtils.firstWordIsLink(originalMessage))
             originalMessage = originalMessage.substring(0, 1).toUpperCase() + originalMessage.substring(1);
         newMessage = newMessage.replaceAll("(?i)\\{message\\}", originalMessage);
         String world = (cs instanceof Player) ? MultiverseUtils.getMVWorldName(((Player) cs).getWorld()) : "";
