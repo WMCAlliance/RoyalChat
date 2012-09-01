@@ -255,4 +255,25 @@ public class RUtils {
         Pattern p = Pattern.compile("^(?:([hH]ttps?)://)?([-\\w_\\.]{2,}\\.[a-z]{2,3})(/\\S*)?$"); // Minecraft's regex checker with caps allowed
         return p.matcher(message.split(" ")[0]).matches();
     }
+
+    /**
+     * Detects if the given string is an emoticon.
+     *
+     * @param s String to check
+     * @return true if emoticon, false if not
+     */
+    public static boolean isEmoticon(String s) {
+        return s.length() <= 3 && (s.matches("(:|x|=|;)\\w") || s.matches("\\w(|:|x|=|;)") || s.matches("\\W\\w") || s.matches("\\w\\W"));
+    }
+
+    /**
+     * Capitalizes the first letter of the message if it should be.
+     *
+     * @param message Message
+     * @return Message with proper caps
+     */
+    public static String capitalize(String message) {
+        if (firstWordIsLink(message) || isEmoticon(message.split(" ")[0])) return message;
+        return message.substring(0, 1).toUpperCase() + message.substring(1);
+    }
 }
