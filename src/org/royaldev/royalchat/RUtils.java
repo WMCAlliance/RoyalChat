@@ -59,7 +59,12 @@ public class RUtils {
      */
     public static String colorize(String original) {
         if (original == null) return original;
-        return original.replaceAll("(?i)&([a-f0-9k-or])", "\u00a7$1");
+        String[] words = original.split(" ");
+        for (int i = 0; i < words.length; i++) {
+            if (firstWordIsLink(words[i])) continue;
+            words[i] = words[i].replaceAll("(?i)&([a-f0-9k-or])", "\u00a7$1");
+        }
+        return join(words, 0);
     }
 
     /**
@@ -275,5 +280,21 @@ public class RUtils {
     public static String capitalize(String message) {
         if (firstWordIsLink(message) || isEmoticon(message.split(" ")[0])) return message;
         return message.substring(0, 1).toUpperCase() + message.substring(1);
+    }
+
+    /**
+     * Highlights links in the message in dark aqua.
+     *
+     * @param message Message
+     * @return Message with highlighted links
+     */
+    public static String highlightLinks(String message) {
+        String[] words = message.split(" ");
+        for (int i = 0; i < words.length; i++) {
+            if (!words[i].matches("^(?:(https?)://)?([-\\w_\\.]{2,}\\.[a-z]{2,3})(/\\S*)?$"))
+                continue;
+            words[i] = ChatColor.DARK_AQUA + words[i] + getLastColor(message, message.indexOf(words[i]));
+        }
+        return join(words, 0);
     }
 }

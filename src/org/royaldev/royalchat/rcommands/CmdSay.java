@@ -30,6 +30,8 @@ public class CmdSay implements CommandExecutor {
             originalMessage = RUtils.removeCaps(originalMessage);
         if (RoyalChat.firstWordCapital)
             originalMessage = RUtils.capitalize(originalMessage);
+        if (RoyalChat.highlightLinks)
+            originalMessage = RUtils.highlightLinks(originalMessage);
         newMessage = newMessage.replaceAll("(?i)\\{message\\}", originalMessage);
         String world = (cs instanceof Player) ? MultiverseUtils.getMVWorldName(((Player) cs).getWorld()) : "";
         newMessage = newMessage.replaceAll("(?i)\\{world\\}", world);

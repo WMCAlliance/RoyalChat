@@ -92,6 +92,8 @@ public class PlayerListener implements Listener {
         if (RoyalChat.firstWordCapital) {
             originalMessage = RUtils.capitalize(originalMessage);
         }
+        if (RoyalChat.highlightLinks)
+            originalMessage = RUtils.highlightLinks(originalMessage);
 
         for (Player pl : plugin.getServer().getOnlinePlayers()) {
             if (plugin.isVanished(pl)) continue;
@@ -218,6 +220,8 @@ public class PlayerListener implements Listener {
             originalMessage = RUtils.removeCaps(originalMessage);
         if (RoyalChat.firstWordCapital)
             originalMessage = RUtils.capitalize(originalMessage);
+        if (RoyalChat.highlightLinks)
+            originalMessage = RUtils.highlightLinks(originalMessage);
 
         for (Player pl : plugin.getServer().getOnlinePlayers()) {
             if (plugin.isVanished(pl)) continue;

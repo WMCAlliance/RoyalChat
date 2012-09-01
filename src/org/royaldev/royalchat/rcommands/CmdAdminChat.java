@@ -66,6 +66,8 @@ public class CmdAdminChat implements CommandExecutor {
             originalMessage = RUtils.removeCaps(originalMessage);
         if (RoyalChat.firstWordCapital)
             originalMessage = RUtils.capitalize(originalMessage);
+        if (RoyalChat.highlightLinks)
+            originalMessage = RUtils.highlightLinks(originalMessage);
         newMessage = newMessage.replaceAll("(?i)\\{message\\}", originalMessage);
         String world = (sender instanceof Player) ? MultiverseUtils.getMVWorldName(((Player) sender).getWorld()) : "";
         newMessage = newMessage.replaceAll("(?i)\\{world\\}", world);

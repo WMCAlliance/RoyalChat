@@ -121,6 +121,7 @@ public class RoyalChat extends JavaPlugin {
     public static Boolean removeAllCaps;
     public static Boolean interWorld;
     public static Boolean useChannels;
+    public static Boolean highlightLinks;
 
     //- Doubles -//
 
@@ -165,6 +166,7 @@ public class RoyalChat extends JavaPlugin {
         removeAllCaps = config.getBoolean("remove-all-caps", true);
         interWorld = config.getBoolean("interworld", true);
         useChannels = config.getBoolean("use-channels", false);
+        highlightLinks = config.getBoolean("highlight-links", true);
 
         //- Doubles -//
 
