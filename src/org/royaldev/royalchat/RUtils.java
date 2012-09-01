@@ -52,6 +52,23 @@ public class RUtils {
     }
 
     /**
+     * Joins an array of strings with spaces
+     *
+     * @param array    Array to join
+     * @param position Position to start joining from
+     * @param append   char to append at the end of the string (usually space)
+     * @return Joined string
+     */
+    public static String join(String[] array, int position, char append) {
+        StrBuilder sb = new StrBuilder();
+        for (int i = position; i < array.length; i++) {
+            sb.append(array[i]);
+            sb.append(" ");
+        }
+        return sb.substring(0, sb.length() - 1 + append);
+    }
+
+    /**
      * Converts raw color codes to colors
      *
      * @param original String with raw color codes
@@ -64,7 +81,8 @@ public class RUtils {
             if (firstWordIsLink(words[i])) continue;
             words[i] = words[i].replaceAll("(?i)&([a-f0-9k-or])", "\u00a7$1");
         }
-        return join(words, 0);
+        if (original.endsWith(" ")) return join(words, 0, ' ');
+        else return join(words, 0);
     }
 
     /**
@@ -295,6 +313,7 @@ public class RUtils {
                 continue;
             words[i] = ChatColor.DARK_AQUA + words[i] + getLastColor(message, message.indexOf(words[i]));
         }
-        return join(words, 0);
+        if (message.endsWith(" ")) return join(words, 0, ' ');
+        else return join(words, 0);
     }
 }
