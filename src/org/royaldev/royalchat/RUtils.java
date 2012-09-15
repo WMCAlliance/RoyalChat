@@ -297,6 +297,7 @@ public class RUtils {
      */
     public static String capitalize(String message) {
         if (firstWordIsLink(message) || isEmoticon(message.split(" ")[0])) return message;
+        if (message.length() < 1) return message;
         return message.substring(0, 1).toUpperCase() + message.substring(1);
     }
 
