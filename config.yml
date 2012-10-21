@@ -10,6 +10,8 @@ admin-format: "&b[Admin] {dispname}:&3 {message}"
 first-word-capital: false
 # Highlight users when they are mentioned?
 highlight-at-user: true
+# Highlight links?
+highlight-links: true
 # Poof smoke on users when they are mentioned?
 smoke-at-user: true
 # Remove all caps messages?
