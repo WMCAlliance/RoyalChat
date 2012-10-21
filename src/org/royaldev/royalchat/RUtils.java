@@ -308,6 +308,7 @@ public class RUtils {
      * @return Message with highlighted links
      */
     public static String highlightLinks(String message) {
+        if (!RoyalChat.highlightLinks) return message;
         String[] words = message.split(" ");
         for (int i = 0; i < words.length; i++) {
             if (!words[i].matches("^(?:(https?)://)?([-\\w_\\.]{2,}\\.[a-z]{2,3})(/\\S*)?$"))
