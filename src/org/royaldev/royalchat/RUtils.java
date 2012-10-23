@@ -286,7 +286,8 @@ public class RUtils {
      * @return true if emoticon, false if not
      */
     public static boolean isEmoticon(String s) {
-        return s.length() >= 2 && s.length() <= 3 && (s.matches("(:|x|=|;)\\w") || s.matches("\\w(|:|x|=|;)") || s.matches("\\W\\w") || s.matches("\\w\\W"));
+        return false; // Must rewrite later
+        //return s.length() >= 2 && s.length() <= 3 && (s.matches("(:|x|=|;)\\w") || s.matches("\\w(|:|x|=|;)") || s.matches("\\W\\w") || s.matches("\\w\\W"));
     }
 
     /**
