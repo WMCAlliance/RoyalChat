@@ -304,6 +304,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+        if (plugin.isVanished(p)) return;
         if (RoyalChat.useChannels && Channeler.getPlayerChannel(p) == null)
             if (!Channeler.addToDefaultChannel(p))
                 RoyalChat.instance.log.warning("There is no default channel set! Chat may look odd.");
@@ -315,6 +316,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onKick(PlayerKickEvent e) {
+        if (plugin.isVanished(e.getPlayer())) return;
         if (e.isCancelled()) return;
         String message = RUtils.colorize(replaceVars(RoyalChat.kickMessage, e.getPlayer()));
         message = message.replaceAll("(?i)\\{reason\\}", e.getReason());
@@ -325,6 +327,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
+        if (plugin.isVanished(e.getPlayer())) return;
         String message = RUtils.colorize(replaceVars(RoyalChat.quitMessage, e.getPlayer()));
         if (message.equalsIgnoreCase("no-handle")) return;
         if (message.equals("")) message = null;
