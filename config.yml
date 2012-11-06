@@ -64,11 +64,10 @@ quit-message: "&e{name} has quit."
 kick-message: "&e{name} was kicked!"
 # World message
 world-message: "&e{name} joined {world} from {fromworld}."
-# PermissionsBukkit prefixes/suffixes (these will apply regardless of permission system - disable with pbukkit: [])
-pbukkit:
-    prefixes:
-        Mod: '&b'
-        Admin: '&a'
-    suffixes:
-        Mod: '&f'
-        Admin: '&e'
+# Prefixes and Suffixes
+prefixes:
+  Mod: '&b'
+  Admin: '&a'
+suffixes:
+  Mod: '&f'
+  Admin: '&e'

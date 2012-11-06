@@ -133,7 +133,7 @@ public class RUtils {
         }
         if (group == null) group = "";
         if (prefix == null) prefix = "";
-        String pb = (!group.equals("")) ? RoyalChat.instance.getConfig().getString("pbukkit.prefixes." + group, "") : "";
+        String pb = (!group.equals("")) ? RoyalChat.instance.getConfig().getString("prefixes." + group, "") : "";
         prefix = prefix + pb;
         return colorize(prefix);
     }
@@ -160,7 +160,7 @@ public class RUtils {
         }
         if (group == null) group = "";
         if (suffix == null) suffix = "";
-        String pb = (!group.equals("")) ? RoyalChat.instance.getConfig().getString("pbukkit.suffixes." + group, "") : "";
+        String pb = (!group.equals("")) ? RoyalChat.instance.getConfig().getString("suffixes." + group, "") : "";
         suffix = suffix + pb;
         return colorize(suffix);
     }

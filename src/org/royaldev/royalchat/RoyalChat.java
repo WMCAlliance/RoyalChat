@@ -180,6 +180,10 @@ public class RoyalChat extends JavaPlugin {
 
         instance = this;
 
+        //-- API startup --//
+
+        RoyalChatAPI.updatePluginInstance(this);
+
         //-- Dependency loading --//
 
         setupPermissions();
