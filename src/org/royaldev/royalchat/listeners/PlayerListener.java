@@ -20,6 +20,7 @@ import org.royaldev.royalchat.RoyalChat;
 import org.royaldev.royalchat.depends.MultiverseUtils;
 import org.royaldev.royalchat.rcommands.CmdAdminChat;
 
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -241,8 +242,11 @@ public class PlayerListener implements Listener {
                     for (int i = 0; i < 8; i++) {
                         if (i == 4) continue;
                         Location playAt = pl.getEyeLocation();
-                        pl.getWorld().playEffect(playAt, Effect.SMOKE, i);
-                        pl.getWorld().playEffect(playAt, Effect.SMOKE, i);
+                        try {
+                            pl.getWorld().playEffect(playAt, Effect.SMOKE, i);
+                            pl.getWorld().playEffect(playAt, Effect.SMOKE, i);
+                        } catch (ConcurrentModificationException ignored) { // wtf, Bukkit? o.O why u throw CME sometimes
+                        }
                     }
                 }
             } else if (originalMessage.toLowerCase().contains(pl.getName().toLowerCase())) {
