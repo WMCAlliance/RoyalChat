@@ -263,8 +263,11 @@ public class PlayerListener implements Listener {
                     for (int i = 0; i < 8; i++) {
                         if (i == 4) continue;
                         Location playAt = pl.getEyeLocation();
-                        p.getWorld().playEffect(playAt, Effect.SMOKE, i);
-                        p.getWorld().playEffect(playAt, Effect.SMOKE, i);
+                        try {
+                            p.getWorld().playEffect(playAt, Effect.SMOKE, i);
+                            p.getWorld().playEffect(playAt, Effect.SMOKE, i);
+                        } catch (ConcurrentModificationException ignored) {
+                        }
                     }
                 }
             }
