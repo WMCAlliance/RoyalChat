@@ -21,11 +21,14 @@
     <target name="compile" depends="init">
         <javac srcdir="${src}" destdir="${build}" includeantruntime="false" debug="true">
             <classpath>
-                <pathelement location="lib/bukkit-1.1-R1-SNAPSHOT.jar"/>
+                <pathelement location="lib/bukkit.jar"/>
+                <pathelement location="lib/craftbukkit.jar"/>
                 <pathelement location="lib/Vault.jar"/>
                 <pathelement location="lib/VanishNoPacket.jar"/>
-                <pathelement location="lib/Towny.jar"/>
                 <pathelement location="lib/Multiverse-Core-2.4.jar"/>
+                <pathelement location="lib/rCmds.jar"/>
+                <pathelement location="lib/Factions.jar"/>
+                <pathelement location="lib/Towny.jar"/>
             </classpath>
         </javac>
     </target>
@@ -34,9 +37,10 @@
         <mkdir dir="${dist}"/>
         <jar jarfile="${dist}/lib/${label}.jar">
             <fileset dir="${build}"/>
-            <fileset file="config.yml"/>
             <fileset file="plugin.yml"/>
+            <fileset file="config.yml"/>
             <fileset file="LICENSE"/>
+            <fileset file="README.md"/>
         </jar>
     </target>
 
@@ -47,4 +51,3 @@
         <delete dir="${dist}"/>
     </target>
 </project>
-

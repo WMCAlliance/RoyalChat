@@ -8,11 +8,11 @@ import org.bukkit.entity.Player;
 import org.royaldev.royalchat.RUtils;
 import org.royaldev.royalchat.RoyalChat;
 
-public class CmdRclear implements CommandExecutor {
+public class CmdRClear implements CommandExecutor {
 
-    RoyalChat plugin;
+    private final RoyalChat plugin;
 
-    public CmdRclear(RoyalChat instance) {
+    public CmdRClear(RoyalChat instance) {
         plugin = instance;
     }
 
@@ -22,17 +22,27 @@ public class CmdRclear implements CommandExecutor {
                 RUtils.dispNoPerms(cs);
                 return true;
             }
-            if (args.length < 1) {
-                for (int i = 0; i < 120; i++) cs.sendMessage("");
-                return true;
+            if (!(cs instanceof Player) && args.length < 1) {
+                cs.sendMessage(cmd.getDescription());
+                return false;
             }
-            Player t = plugin.getServer().getPlayer(args[0]);
-            if (t == null) {
+            Player t = (args.length > 0) ? plugin.getServer().getPlayer(args[0]) : (Player) cs;
+            if (t == null && args.length > 0) {
+                if (cs == null) return false; // satisfies IntelliJ
+                if (args[0].equals("*")) {
+                    for (int i = 0; i < 120; i++) plugin.getServer().broadcastMessage("");
+                    cs.sendMessage(ChatColor.BLUE + "Cleared the screen of " + ChatColor.GRAY + "all players" + ChatColor.BLUE + ".");
+                    return true;
+                }
+            }
+            if (t == null || plugin.isVanished(t)) {
+                if (cs == null) return false;
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
             for (int i = 0; i < 120; i++) t.sendMessage("");
-            cs.sendMessage(ChatColor.BLUE + "Cleared the chat of " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
+            if (!cs.equals(t))
+                cs.sendMessage(ChatColor.BLUE + "Cleared the screen of " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
             return true;
         }
         return false;

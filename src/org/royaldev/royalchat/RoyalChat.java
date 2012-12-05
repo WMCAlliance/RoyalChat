@@ -1,235 +1,185 @@
 package org.royaldev.royalchat;
 
-import com.onarandombox.MultiverseCore.MultiverseCore;
-import com.palmergames.bukkit.towny.Towny;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.vanish.VanishPlugin;
-import org.royaldev.royalchat.listeners.PlayerListener;
+import org.royaldev.royalchat.listeners.ChatListener;
+import org.royaldev.royalchat.listeners.MessageListener;
 import org.royaldev.royalchat.rcommands.CmdAdminChat;
 import org.royaldev.royalchat.rcommands.CmdChannel;
-import org.royaldev.royalchat.rcommands.CmdMe;
-import org.royaldev.royalchat.rcommands.CmdRchat;
-import org.royaldev.royalchat.rcommands.CmdRclear;
+import org.royaldev.royalchat.rcommands.CmdEmote;
+import org.royaldev.royalchat.rcommands.CmdRClear;
+import org.royaldev.royalchat.rcommands.CmdRoyalChat;
 import org.royaldev.royalchat.rcommands.CmdSay;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-@SuppressWarnings("unused")
+import static org.royaldev.royalchat.Language.NO_PERMISSIONS_SYSTEM;
+
 public class RoyalChat extends JavaPlugin {
 
-    //--- Globals ---//
+    /*
+    * TODO: Caps blocker
+     */
 
     public Logger log;
-    public Logger unNamedLog = Logger.getLogger("Minecraft");
+    /**
+     * This is the main API interface.
+     */
+    public DataManager dm;
 
-    public static RoyalChat instance;
+    private boolean usingPerms = false;
 
-    public static Permission permission = null;
-    public static Chat chat = null;
+    public boolean withVault = false;
+    public boolean withFactions = false;
+    public boolean withRoyalCommands = false;
+    public boolean withMultiverse = false;
+    public boolean withVNP = false;
+    public boolean withTowny = false;
 
-    private VanishPlugin vp = null;
-    public static MultiverseCore mvc = null;
-    public static Towny towny = null;
+    public boolean useChannels;
+    public boolean firstCapital;
+    public boolean highlightPlayers;
+    public boolean smokePlayers;
+    public boolean highlightURLs;
 
-    //--- Public, static methods ---//
-
-    public static void sendToConsole(String s) {
-        Bukkit.getServer().getConsoleSender().sendMessage(s);
-    }
-
-    public static boolean hasAuthorization(final OfflinePlayer p, final String node) {
-        String world = Bukkit.getServer().getWorlds().get(0).getName();
-        return p instanceof RemoteConsoleCommandSender || p instanceof ConsoleCommandSender || RoyalChat.permission.has(world, p.getName(), node);
-    }
-
-    public static boolean hasAuthorization(final Player player, final String node) {
-        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || RoyalChat.permission.has(player.getWorld(), player.getName(), node);
-    }
-
-    public static boolean hasAuthorization(final CommandSender player, final String node) {
-        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || RoyalChat.permission.has(player, node);
-    }
-
-    //--- Public, non-static methods ---//
+    private VanishPlugin vp;
 
     public boolean isVanished(Player p) {
         if (vp == null) {
             vp = (VanishPlugin) Bukkit.getServer().getPluginManager().getPlugin("VanishNoPacket");
             return false;
-        } else return vp.getManager().isVanished(p.getName());
+        }
+        return vp.getManager().isVanished(p);
     }
 
     public boolean isAuthorized(final OfflinePlayer p, final String node) {
+        if (!usingPerms) return false;
         String world = getServer().getWorlds().get(0).getName();
-        return p instanceof RemoteConsoleCommandSender || p instanceof ConsoleCommandSender || RoyalChat.permission.has(world, p.getName(), node);
+        return !(p instanceof Player) && !(p != null) || RoyalChat.permission.has(world, p.getName(), node);
     }
 
     public boolean isAuthorized(final Player player, final String node) {
-        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || RoyalChat.permission.has(player.getWorld(), player.getName(), node);
+        if (!usingPerms) return player.hasPermission(node);
+        return !(player != null) || RoyalChat.permission.playerHas(player.getWorld(), player.getName(), node);
     }
 
     public boolean isAuthorized(final CommandSender player, final String node) {
-        return player instanceof RemoteConsoleCommandSender || player instanceof ConsoleCommandSender || RoyalChat.permission.has(player, node);
+        if (!usingPerms) return player.hasPermission(node);
+        return !(player instanceof Player) && !(player instanceof OfflinePlayer) || RoyalChat.permission.has(player, node);
     }
 
-    //--- Private methods ---//
+    public static Permission permission = null;
+    public static Chat chat = null;
 
-    private Boolean setupPermissions() {
+    private boolean setupPermissions() {
+        if (!withVault) return false;
         RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
         if (permissionProvider != null) permission = permissionProvider.getProvider();
         return (permission != null);
     }
 
-    private Boolean setupChat() {
+    private boolean setupChat() {
+        if (!withVault) return false;
         RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
         if (chatProvider != null) chat = chatProvider.getProvider();
         return (chat != null);
     }
 
-    //--- Configuration values ---//
-
-    //- Strings -//
-
-    public static String chatFormat;
-    public static String sayFormat;
-    public static String meFormat;
-    public static String adminFormat;
-
-    public static String joinMessage;
-    public static String quitMessage;
-    public static String kickMessage;
-    public static String worldMessage;
-
-    //- Booleans -//
-
-    public static Boolean firstWordCapital;
-    public static Boolean highlightMentions;
-    public static Boolean smokeOnMention;
-    public static Boolean removeAllCaps;
-    public static Boolean interWorld;
-    public static Boolean useChannels;
-    public static Boolean highlightLinks;
-
-    //- Doubles -//
-
-    public static Double capsRemovalPercent;
-    public static Double chatRadius;
-
-    //--- reloadConfigValues() ---//
-
     /**
-     * Reloads all configuration values from the config
+     * Registers a command in the server. If the command isn't defined in plugin.yml
+     * the NPE is caught, and a warning line is sent to the console.
+     *
+     * @param ce      CommandExecutor to be registered
+     * @param command Command name as specified in plugin.yml
+     * @param jp      Plugin to register under
      */
-    public void reloadConfigValues() {
-
-        //- Default config loading -//
-
-        if (!new File(getDataFolder() + File.separator + "config.yml").exists())
-            saveDefaultConfig();
-        FileConfiguration config = getConfig();
-
-        //- Channel loading -//
-
-        Channeler.reload();
-        Channeler.reloadAllChannels();
-
-        //- Strings -//
-
-        chatFormat = config.getString("chat-format", "{prefix}{group}{suffix} {dispname}&r: {message}");
-        sayFormat = config.getString("say-format", "&d[Server] {message}");
-        meFormat = config.getString("me-format", "&d * &b{dispname}&d {message}");
-        adminFormat = config.getString("admin-format", "&b[Admin] {dispname}:&3 {message}");
-
-        joinMessage = config.getString("join-message", "&e{name} has joined.");
-        quitMessage = config.getString("quit-message", "&e{name} has quit.");
-        kickMessage = config.getString("kick-message", "&e{name} was kicked!");
-        worldMessage = config.getString("world-message", "&e{name} joined {world} from {fromworld}.");
-
-        //- Booleans -//
-
-        firstWordCapital = config.getBoolean("first-word-capital", false);
-        highlightMentions = config.getBoolean("highlight-at-user", true);
-        smokeOnMention = config.getBoolean("smoke-at-user", false);
-        removeAllCaps = config.getBoolean("remove-all-caps", true);
-        interWorld = config.getBoolean("interworld", true);
-        useChannels = config.getBoolean("use-channels", false);
-        highlightLinks = config.getBoolean("highlight-links", true);
-
-        //- Doubles -//
-
-        capsRemovalPercent = config.getDouble("caps-removal-percent", 75D);
-        chatRadius = config.getDouble("chat-radius", 0D);
+    private void registerCommand(CommandExecutor ce, String command, JavaPlugin jp) {
+        try {
+            jp.getCommand(command).setExecutor(ce);
+        } catch (NullPointerException e) {
+            log.warning("Could not register command \"" + command + "\" - not registered in plugin.yml (" + e.getMessage() + ")");
+        }
     }
 
-    //--- onEnable() ---//
+    public void reloadConfigVals() {
+        FileConfiguration c = getConfig();
+        useChannels = c.getBoolean("channels.use-channels", false);
+        firstCapital = c.getBoolean("chat.capitalize-first-letter", true);
+        highlightPlayers = c.getBoolean("chat.highlights.players.enabled", true);
+        smokePlayers = c.getBoolean("chat.highlights.players.poof-smoke", true);
+        highlightURLs = c.getBoolean("chat.highlights.urls", true);
+    }
+
+    private void saveLangFile(String name) {
+        if (!new File(getDataFolder() + File.separator + "lang" + File.separator + name + ".properties").exists())
+            saveResource("lang" + File.separator + name + ".properties", false);
+    }
 
     public void onEnable() {
-
-        instance = this;
-
-        //-- API startup --//
-
-        RoyalChatAPI.updatePluginInstance(this);
-
-        //-- Dependency loading --//
-
-        setupPermissions();
-        setupChat();
-        vp = (VanishPlugin) getServer().getPluginManager().getPlugin("VanishNoPacket");
-        mvc = (MultiverseCore) getServer().getPluginManager().getPlugin("Multiverse-Core");
-        towny = (Towny) getServer().getPluginManager().getPlugin("Towny");
-
-        //-- Configuration management --//
-
-        reloadConfigValues();
-
-        //-- Set up channeling --//
-
-        Channeler.addAllChannels();
-
-        //-- Logging --//
-
         log = getLogger();
 
-        //-- Listeners --//
+        if (!new File(getDataFolder(), "config.yml").exists()) saveDefaultConfig();
+        reloadConfig();
+        reloadConfigVals();
 
-        PluginManager pm = getServer().getPluginManager();
+        saveLangFile("en_us");
+        saveLangFile("es");
 
-        pm.registerEvents(new PlayerListener(this), this);
-
-        //-- Commands --//
-
-        getCommand("rchat").setExecutor(new CmdRchat(this));
-        getCommand("say").setExecutor(new CmdSay(this));
-        getCommand("me").setExecutor(new CmdMe(this));
-        getCommand("adminchat").setExecutor(new CmdAdminChat(this));
-        getCommand("rclear").setExecutor(new CmdRclear(this));
-        getCommand("channel").setExecutor(new CmdChannel(this));
-
-        //-- Start Hidendra's Metrics --//
+        try {
+            new Language.LanguageHelper(getDataFolder() + File.separator + getConfig().getString("general.language-file", "lang/en_us.properties"));
+        } catch (IOException e) {
+            log.severe("Could not load language file: " + e.getMessage());
+            log.severe("Disabling plugin.");
+            setEnabled(false);
+            return;
+        }
 
         try {
             new MetricsLite(this).start();
         } catch (IOException e) {
-            log.warning("Could not start Metrics!");
+            log.warning("Could not start Metrics: " + e.getMessage());
         }
 
-    }
+        withVault = getServer().getPluginManager().getPlugin("Vault") != null;
+        withRoyalCommands = getServer().getPluginManager().getPlugin("RoyalCommands") != null;
+        withTowny = getServer().getPluginManager().getPlugin("Towny") != null;
+        withMultiverse = getServer().getPluginManager().getPlugin("Multiverse-Core") != null;
+        withFactions = getServer().getPluginManager().getPlugin("Factions") != null;
+        withVNP = getServer().getPluginManager().getPlugin("VanishNoPacket") != null;
+        vp = (VanishPlugin) getServer().getPluginManager().getPlugin("VanishNoPacket");
 
-    //--- onDisable ---//
+        usingPerms = setupPermissions();
+        setupChat();
+
+        if (!usingPerms) log.info(NO_PERMISSIONS_SYSTEM.toString());
+
+        dm = new DataManager(this);
+
+        PluginManager pm = getServer().getPluginManager();
+        pm.registerEvents(new ChatListener(this), this);
+        pm.registerEvents(new MessageListener(this), this);
+
+        registerCommand(new CmdRoyalChat(this), "royalchat", this);
+        registerCommand(new CmdChannel(this), "channel", this);
+        registerCommand(new CmdRClear(this), "rclear", this);
+        registerCommand(new CmdEmote(this), "emote", this);
+        registerCommand(new CmdSay(this), "say", this);
+        registerCommand(new CmdAdminChat(this), "adminchat", this);
+
+        dm.updateChannels();
+    }
 
     public void onDisable() {
 

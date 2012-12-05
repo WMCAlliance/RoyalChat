@@ -6,13 +6,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.royaldev.royalchat.Channel;
-import org.royaldev.royalchat.Channeler;
 import org.royaldev.royalchat.RUtils;
 import org.royaldev.royalchat.RoyalChat;
 
+import static org.royaldev.royalchat.Language.*;
+
 public class CmdChannel implements CommandExecutor {
 
-    RoyalChat plugin;
+    private final RoyalChat plugin;
 
     public CmdChannel(RoyalChat instance) {
         plugin = instance;
@@ -25,37 +26,41 @@ public class CmdChannel implements CommandExecutor {
                 return true;
             }
             if (args.length < 1) {
-                if (cs instanceof Player) {
-                    Channel c = Channeler.getPlayerChannel((Player) cs);
-                    String message = (c == null) ? ChatColor.BLUE + "You are currently not in a channel." : ChatColor.BLUE + "You are currently in " + ChatColor.GRAY + c.getName() + ChatColor.BLUE + ".";
-                    cs.sendMessage(message);
-                }
                 cs.sendMessage(cmd.getDescription());
                 return false;
             }
             if (!(cs instanceof Player)) {
-                cs.sendMessage(ChatColor.RED + "This command is only available to players!");
+                cs.sendMessage(ChatColor.RED + COMMAND_ONLY_PLAYERS.toString());
+                return true;
+            }
+            if (!plugin.useChannels) {
+                cs.sendMessage(ChatColor.RED + CHANNELS_OFF.toString());
                 return true;
             }
             Player p = (Player) cs;
-            String channel = args[0];
-            String password = (args.length > 1) ? args[1] : "";
-            Channel c = Channeler.getChannel(channel);
+            String wantedChannel = args[0];
+            String password = (args.length > 1) ? args[1] : null;
+            Channel c = plugin.dm.getChannel(wantedChannel);
             if (c == null) {
-                cs.sendMessage(ChatColor.RED + "No such channel!");
+                cs.sendMessage(ChatColor.RED + NO_CHANNEL.toString());
                 return true;
             }
-            if (c.getUsePassword() && password.equals("")) {
-                cs.sendMessage(ChatColor.RED + "This channel requires a password!");
-                return true;
-            } else if (c.getUsePassword() && !password.equals(c.getPassword())) {
-                cs.sendMessage(ChatColor.RED + "Wrong password!");
-                return true;
+            if (!c.isPasswordProtected() && password != null)
+                cs.sendMessage(ChatColor.RED + CHANNEL_EXTRA_PASSWORD.toString());
+            if (c.isPasswordProtected()) {
+                if (password == null) {
+                    cs.sendMessage(ChatColor.RED + CHANNEL_MISSING_PASSWORD.toString() + " " + ChatColor.GRAY + "/" + label + ChatColor.RED + ".");
+                    return true;
+                }
+                if (!password.equals(c.getPassword())) {
+                    cs.sendMessage(ChatColor.RED + CHANNEL_WRONG_PASSWORD.toString());
+                    return true;
+                }
             }
-            Channel curChan = Channeler.getPlayerChannel(p);
-            if (curChan != null) curChan.removeMember(p);
+            Channel current = plugin.dm.getChannelOf(p);
+            if (current != null) current.removeMember(p);
             c.addMember(p);
-            cs.sendMessage(ChatColor.BLUE + "Joined " + ChatColor.GRAY + c.getName() + ChatColor.BLUE + ".");
+            cs.sendMessage(ChatColor.BLUE + CHANNEL_JOINED.toString() + " " + ChatColor.GRAY + c.getName() + ChatColor.BLUE + ".");
             return true;
         }
         return false;

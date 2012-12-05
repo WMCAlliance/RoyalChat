@@ -1,73 +1,70 @@
-# Default chat formatting
-chat-format: "{world} {prefix}{group}{suffix} {dispname}&r: {message}"
-# Default /me formatting
-me-format: "&d * &b{dispname}&d {message}"
-# Default /say formatting
-say-format: "&d[Server] {message}"
-# Default /ac formatting
-admin-format: "&b[Admin] {dispname}:&3 {message}"
-# Capitalize first word?
-first-word-capital: false
-# Highlight users when they are mentioned?
-highlight-at-user: true
-# Highlight links?
-highlight-links: true
-# Poof smoke on users when they are mentioned?
-smoke-at-user: true
-# Remove all caps messages?
-remove-all-caps: true
-# Percent of message that must be in caps to be make it lowercase (remove-all-caps must be true)
-caps-removal-percent: 75
-# Max chat radius. 0 is none. Overrides channels if greater than 0 (leave at 0 to use channel limits)
-chat-radius: 0
-# Allow inter-world chat? Does not override channels
-interworld: true
-# Use channels?
-use-channels: true
-# Define channels here
+general:
+  # Relative to plugins/RoyalChat/
+  language-file: "lang/en_us.properties"
+
+# The defaults are all commented out just to show how these are specified.
+players:
+  prefixes:
+    #"*": "&c"
+    groups:
+      #Mod: "[&2Moderator&r]"
+      #Admin: "[&4Admin&r]"
+    players:
+      #jkcclemens: "[&kGod&r]"
+  suffixes:
+    #"*": "&r"
+    groups:
+      #Admin: ", the great&r"
+    players:
+      #jkcclemens: ", the sexiest&r"
+
+chat:
+  default-chat-format: "{prefix} {dispname}{suffix}: {message}"
+  me-format: "&d * &b{dispname}&d {message}"
+  say-format: "&d[Server] {message}"
+  admin-chat-format: "&b[Admin] {dispname}:&3 {message}"
+  capitalize-first-letter: true
+  remove-all-caps:
+    enabled: false
+    # The amount of capital letters in the message must be greater than this percentage
+    # in order to be removed. Emoticons are counted as lowercase.
+    # HELlo = 60% caps
+    # HI! = 100% caps
+    # hey = 0% caps
+    percent-for-remove: 75
+  highlights:
+    players:
+      enabled: true
+      poof-smoke: true
+    urls: true
+
 channels:
-  # Each option in the default chat channel is required for all other channels (unless otherwise stated)
-  # To join this channel: /ch default
-  # To join the channel "admin" /ch admin
+  use-channels: false
   default:
-    # Pretty name
-    name: "Default"
-    # Default? There can only be one...
     default: true
-    # Chat format
-    chat-format: "[d] {dispname}: {message}"
-    # Chat radius (0 makes for no limit - i.e. global)
-    chat-radius: 0
-    # Can the chat always be seen, even if you're in another channel? Overrides chat-radius. Respects interworld
-    alwaysseen: true
-    # Allow interworld chat in this channel? Overrides main interworld setting.
-    interworld: true
-    # Use a password?
-    use-password: false
-    # Sets the password (syntax: /ch d abc) - if use-password is false, this is optional
-    password: "abc"
-  admin:
-    name: "Admin"
+    chat-format: "[d]{dispname}: {message}"
+    radius: 0
+    omnipresent: true
+    multiworld: true
+  local:
     default: false
-    chat-format: "&b[Admin] {dispname}:&3 {message}"
-    chat-radius: 0
-    alwaysseen: false
-    interworld: true
-    use-password: true
-    password: "supersecret"
-# Set messages here. Set the message to "" to disable it entirely. Set message to "no-handle" to stop RoyalChat from handling that message
-# Join messages
-join-message: "&e{name} has joined."
-# Quit messages
-quit-message: "&e{name} has quit."
-# Kick message
-kick-message: "&e{name} was kicked!"
-# World message
-world-message: "&e{name} joined {world} from {fromworld}."
-# Prefixes and Suffixes
-prefixes:
-  Mod: '&b'
-  Admin: '&a'
-suffixes:
-  Mod: '&f'
-  Admin: '&e'
+    chat-format: "[l]{dispname}: {message}"
+    radius: 35
+    omnipresent: false
+    multiworld: false
+  coolkids:
+    default: false
+    chat-format: "[ck]{dispname}: {message}"
+    radius: 0
+    omnipresent: false
+    multiworld: true
+    password: "jkcclemens"
+
+# These messages all support VanishNoPacket
+# Set a message to "" to disable it.
+# Set a message to "no-handle" to prevent RoyalChat from handling it.
+game-messages:
+  join: "&e{name} has joined."
+  quit: "&e{name} has quit."
+  kick: "&e{name} was kicked for {message}!"
+  world: "&e{name} joined {world} from {fromworld}."
