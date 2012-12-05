@@ -41,6 +41,8 @@
             <fileset file="config.yml"/>
             <fileset file="LICENSE"/>
             <fileset file="README.md"/>
+            <fileset dir="./" includes="lang/en_us.properties"/>
+            <fileset dir="./" includes="lang/es.properties"/>
         </jar>
     </target>
 
