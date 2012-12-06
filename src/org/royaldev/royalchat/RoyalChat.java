@@ -29,10 +29,6 @@ import static org.royaldev.royalchat.Language.NO_PERMISSIONS_SYSTEM;
 
 public class RoyalChat extends JavaPlugin {
 
-    /*
-    * TODO: Caps blocker
-     */
-
     public Logger log;
     /**
      * This is the main API interface.
@@ -64,15 +60,16 @@ public class RoyalChat extends JavaPlugin {
         return vp.getManager().isVanished(p);
     }
 
+    @SuppressWarnings("unused")
     public boolean isAuthorized(final OfflinePlayer p, final String node) {
         if (!usingPerms) return false;
         String world = getServer().getWorlds().get(0).getName();
-        return !(p instanceof Player) && !(p != null) || RoyalChat.permission.has(world, p.getName(), node);
+        return !(p instanceof Player) && p == null || RoyalChat.permission.has(world, p.getName(), node);
     }
 
     public boolean isAuthorized(final Player player, final String node) {
         if (!usingPerms) return player.hasPermission(node);
-        return !(player != null) || RoyalChat.permission.playerHas(player.getWorld(), player.getName(), node);
+        return player == null || RoyalChat.permission.playerHas(player.getWorld(), player.getName(), node);
     }
 
     public boolean isAuthorized(final CommandSender player, final String node) {

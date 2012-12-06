@@ -12,6 +12,13 @@ import static org.royaldev.royalchat.Language.NO_TOWNY_TOWN;
 
 public class TownyUtils {
 
+    /**
+     * Replaces Towny variables.
+     *
+     * @param format Format with Towny variables
+     * @param cs     CommandSender sending message
+     * @return format with Towny variables replaced
+     */
     public static String replaceTowny(final String format, final CommandSender cs) {
         String message = format;
         Resident r;

@@ -29,6 +29,7 @@ import static org.royaldev.royalchat.Language.NO_WORLD;
 /**
  * The main API reference for RoyalChat. It is not to be constructed.
  */
+@SuppressWarnings("unused")
 public class DataManager {
 
     /**
@@ -61,7 +62,6 @@ public class DataManager {
      * <p/>
      * It was created to prevent people from constructing this class.
      */
-    @SuppressWarnings("unused")
     protected DataManager() {
         plugin = null;
     }
@@ -116,7 +116,7 @@ public class DataManager {
     /**
      * Gets the prefix of a player using RoyalChat or Vault.
      * <p/>
-     * The order of prefixes is rChat-player, rChat-group, rChat-*, Vault-player, Vault-group
+     * The order of prefixes is rChat-player, rChat-group, rChat-*, Vault-player, Vault-group, empty.
      *
      * @param cs CommandSender to get prefix of
      * @return prefix or empty string (never null)
@@ -612,17 +612,26 @@ public class DataManager {
         for (Channel ch : channels) if (!loopedThrough.contains(ch.getName())) removeChannel(ch);
     }
 
-    final List<String> emoticons = Arrays.asList(":D", ":P", ";O", ":O", "xP", "xD", "xO");
+    /**
+     * List of Strings regarded as emoticons.
+     */
+    private final List<String> emoticons = Arrays.asList(":D", ":P", ";P", ";O", ":O", "xP", "xD", "xO");
 
     /**
      * Checks to see if a string is an emoticon. This is often used when determining if
      * something should be set to lowercase.
      *
-     * @param s String to check
+     * @param s String to check (whitespace will be stripped if it is not already)
      * @return true if emoticon, false if otherwise
      */
     private boolean isEmoticon(String s) {
-        return emoticons.contains(s);
+        // Remove excess whitespace
+        s = s.trim();
+        // Check for normal emoticons (xD, etc.)
+        boolean isEmoticon = emoticons.contains(s);
+        // Check for reverse emoticons (Dx, etc.)
+        if (!isEmoticon) isEmoticon = emoticons.contains(StringUtils.reverse(s));
+        return isEmoticon;
     }
 
     /**

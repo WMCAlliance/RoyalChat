@@ -51,6 +51,12 @@ public class FactionsUtils {
         return sb.toString();
     }
 
+    /**
+     * Gets the faction tag to be sent to someone (no colors)
+     *
+     * @param fp Person to get tag of
+     * @return Faction tag
+     */
     public static String getFactionTag(final FPlayer fp) {
         String factionTag = fp.getTag();
         String prefix = fp.getRole().getPrefix();
@@ -61,6 +67,13 @@ public class FactionsUtils {
         return sb.toString();
     }
 
+    /**
+     * Replaces all Factions variables.
+     *
+     * @param format Format with Factions variables
+     * @param cs     CommandSender sending message
+     * @return format with replaced variables
+     */
     public static String replaceFactions(final String format, final CommandSender cs) {
         String message = format;
         FPlayer fp = getFPlayer(cs.getName());
