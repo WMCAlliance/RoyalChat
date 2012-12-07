@@ -193,7 +193,7 @@ public class DataManager {
         String inGameMessage = text;
         if (!plugin.isAuthorized(cs, "rchat.caps") && isCaps(inGameMessage, plugin.getConfig().getInt("chat.remove-all-caps.enabled")))
             inGameMessage = inGameMessage.toLowerCase();
-        if (!isEmote) inGameMessage = capitalizeFirstLetter(inGameMessage);
+        if (!isEmote && !isEmoticon(inGameMessage)) inGameMessage = capitalizeFirstLetter(inGameMessage);
         if (plugin.isAuthorized(cs, "rchat.colors")) inGameMessage = colorize(inGameMessage);
         else inGameMessage = decolorize(inGameMessage);
         message = message.replace("{group}", getGroup(cs));
@@ -234,6 +234,9 @@ public class DataManager {
 
     /**
      * Removes color codes that have not been processed yet (&char)
+     * <p/>
+     * This fixes a common exploit where color codes can be embedded into other codes:
+     * &&aa (replaces &a, and the other letters combine to make &a again)
      *
      * @param message String with raw color codes
      * @return String without raw color codes
@@ -243,7 +246,7 @@ public class DataManager {
         boolean contains = p.matcher(message).find();
         while (contains) {
             message = message.replaceAll("(?i)&[a-f0-9k-or]", "");
-            contains = Pattern.compile("(?i)&[a-f0-9k-or]").matcher(message).find();
+            contains = p.matcher(message).find();
         }
         return message;
     }
