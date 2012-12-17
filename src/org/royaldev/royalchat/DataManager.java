@@ -191,7 +191,7 @@ public class DataManager {
         final Player p = (isPlayer) ? (Player) cs : null;
         String message = format;
         String inGameMessage = text;
-        if (!plugin.isAuthorized(cs, "rchat.caps") && isCaps(inGameMessage, plugin.getConfig().getInt("chat.remove-all-caps.enabled")))
+        if (!plugin.isAuthorized(cs, "rchat.caps") && plugin.getConfig().getBoolean("chat.remove-all-caps.enabled") && isCaps(inGameMessage, plugin.getConfig().getInt("chat.remove-all-caps.percent-for-remove")))
             inGameMessage = inGameMessage.toLowerCase();
         if (!isEmote && !isEmoticon(inGameMessage)) inGameMessage = capitalizeFirstLetter(inGameMessage);
         if (plugin.isAuthorized(cs, "rchat.colors")) inGameMessage = colorize(inGameMessage);
@@ -641,6 +641,7 @@ public class DataManager {
      * Checks to see if a message has a capital letter threshold larger than the given percent.
      * <p/>
      * <strong>This takes emoticons into account.</strong> Emoticons are marked as lowercase.
+     * If the message is one letter, it is also not considered caps (e.g. "I").
      *
      * @param str     String to check capital letter threshold of
      * @param percent Percentage that the threshold must be above to be marked all caps (e.g. 75, 50)
@@ -648,6 +649,7 @@ public class DataManager {
      */
     private boolean isCaps(String str, int percent) {
         if (isEmoticon(str)) return false;
+        if (str.length() == 1) return false;
         double numCaps = 0;
         str = str.replaceAll("\\W", "");
         str = str.replaceAll(" ", "");
