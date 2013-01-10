@@ -1,0 +1,70 @@
+general:
+  # Relative to plugins/RoyalChat/
+  language-file: "lang/en_us.properties"
+
+# The defaults are all commented out just to show how these are specified.
+players:
+  prefixes:
+    #"*": "&c"
+    groups:
+      #Mod: "[&2Moderator&r]"
+      #Admin: "[&4Admin&r]"
+    players:
+      #jkcclemens: "[&kGod&r]"
+  suffixes:
+    #"*": "&r"
+    groups:
+      #Admin: ", the great&r"
+    players:
+      #jkcclemens: ", the sexiest&r"
+
+chat:
+  default-chat-format: "{prefix} {dispname}{suffix}: {message}"
+  me-format: "&d * &b{dispname}&d {message}"
+  say-format: "&d[Server] {message}"
+  admin-chat-format: "&b[Admin] {dispname}:&3 {message}"
+  capitalize-first-letter: true
+  remove-all-caps:
+    enabled: false
+    # The amount of capital letters in the message must be greater than this percentage
+    # in order to be removed. Emoticons are counted as lowercase.
+    # HELlo = 60% caps
+    # HI! = 100% caps
+    # hey = 0% caps
+    percent-for-remove: 75
+  highlights:
+    players:
+      enabled: true
+      poof-smoke: true
+    urls: true
+
+channels:
+  use-channels: false
+  default:
+    default: true
+    chat-format: "[d]{dispname}: {message}"
+    radius: 0
+    omnipresent: true
+    multiworld: true
+  local:
+    default: false
+    chat-format: "[l]{dispname}: {message}"
+    radius: 35
+    omnipresent: false
+    multiworld: false
+  coolkids:
+    default: false
+    chat-format: "[ck]{dispname}: {message}"
+    radius: 0
+    omnipresent: false
+    multiworld: true
+    password: "jkcclemens"
+
+# These messages all support VanishNoPacket
+# Set a message to "" to disable it.
+# Set a message to "no-handle" to prevent RoyalChat from handling it.
+game-messages:
+  join: "&e{name} has joined."
+  quit: "&e{name} has quit."
+  kick: "&e{name} was kicked for {message}!"
+  world: "&e{name} joined {world} from {fromworld}."

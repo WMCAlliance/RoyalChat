@@ -1,0 +1,71 @@
+name: RoyalChat
+main: org.royaldev.royalchat.RoyalChat
+author: jkcclemens
+version: ${project.version}
+softdepend: [Vault, Factions, RoyalCommands, VanishNoPacket, Towny, Multiverse-Core]
+website: http://dev.royaldev.org
+
+commands:
+  royalchat:
+    description: Reloads RoyalChat.
+    aliases: [rchat]
+    usage: /<command>
+  channel:
+    description: Changes channels.
+    aliases: [ch]
+    usage: /<command> [channel] (password)
+  rclear:
+    description: Clears the chat box.
+    aliases: [clear, cls]
+    usage: /<command> (player)
+  emote:
+    description: Sends an emote to the server.
+    aliases: [me, action]
+    usage: /<command> [message]
+  say:
+    description: Sends a message from the server.
+    usage: /<command> [message]
+  adminchat:
+    description: Sends a message to an always-present admin channel.
+    aliases: [ac, a]
+    usage: /<command> (message)
+
+permissions:
+  rchat.*:
+    description: Gives every permission.
+    default: false
+    children:
+      rchat.colors: true
+      rchat.rchat: true
+      rchat.channel: true
+      rchat.rclear: true
+      rchat.emote: true
+      rchat.say: true
+      rchat.adminchat: true
+      rchat.channels.snoop: true
+
+  rchat.colors:
+    description: Allows one to use colors in chat messages.
+    default: op
+
+  rchat.rchat:
+    description: Allows one to reload the configuration.
+    default: op
+  rchat.channel:
+    description: Allows one to change channels.
+    default: op
+  rchat.rclear:
+    description: Allows one to clear the chat box.
+    default: op
+  rchat.emote:
+    description: Allows one to emote.
+    default: op
+  rchat.say:
+    description: Allows one to send messages from the server.
+    default: op
+  rchat.adminchat:
+    description: Allows one to send messages to admin chat.
+    default: op
+  rchat.channels.snoop:
+    description: Allows one to see all channel messages all the time.
+    default: false
