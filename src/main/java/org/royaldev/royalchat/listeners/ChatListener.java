@@ -14,6 +14,7 @@ import org.royaldev.royalchat.rcommands.CmdAdminChat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ChatListener implements Listener {
 
@@ -60,6 +61,9 @@ public class ChatListener implements Listener {
                 if (!plugin.isAuthorized(t, "rchat.adminchat")) continue;
                 t.sendMessage(format);
             }
+            Logger.getLogger("Minecraft").info(format);
+            e.setFormat("");
+            e.setMessage("");
             e.setCancelled(true);
             return;
         }
