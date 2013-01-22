@@ -20,6 +20,7 @@ public class MessageListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+        if (plugin.isVanished(p)) return;
         String format = plugin.getConfig().getString("game-messages.join");
         if (format.isEmpty() || plugin.isVanished(p)) {
             e.setJoinMessage(null);
@@ -33,6 +34,7 @@ public class MessageListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
+        if (plugin.isVanished(p)) return;
         String format = plugin.getConfig().getString("game-messages.quit");
         if (format.isEmpty() || plugin.isVanished(p)) {
             e.setQuitMessage(null);

@@ -22,24 +22,8 @@
     </build>
     <repositories>
         <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/content/groups/public/</url>
-        </repository>
-        <repository>
             <id>royal-repo</id>
             <url>http://minor.royaldev.org:8081/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>OnARandomBox</id>
-            <url>http://repo.onarandombox.com/content/repositories/multiverse/</url>
-        </repository>
-        <repository>
-            <id>vault-repo</id>
-            <url>http://ci.herocraftonline.com/plugin/repository/everything</url>
-        </repository>
-        <repository>
-            <id>kitteh-repo</id>
-            <url>http://repo.kitteh.org/content/groups/public/</url>
         </repository>
     </repositories>
     <dependencies>
@@ -52,7 +36,7 @@
         </dependency>
         <dependency>
             <groupId>com.massivecraft</groupId>
-            <artifactId>Factions</artifactId>
+            <artifactId>factions</artifactId>
             <version>LATEST</version>
             <type>jar</type>
             <scope>compile</scope>
