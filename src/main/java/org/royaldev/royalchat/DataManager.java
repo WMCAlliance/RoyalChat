@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import static org.royaldev.royalchat.Language.NO_CHANNEL;
 import static org.royaldev.royalchat.Language.NO_WORLD;
@@ -64,6 +65,29 @@ public class DataManager {
      */
     protected DataManager() {
         plugin = null;
+    }
+
+    /**
+     * Replaces all characters not matching the whitelist if enabled.
+     *
+     * @param s String to strip characters from
+     * @return Stripped string
+     */
+    public String stripFromWhitelist(String s) {
+        if (s == null) return null;
+        if (!plugin.useCharWhitelist) return s;
+        Pattern p;
+        try {
+            p = Pattern.compile(plugin.charWhitelistRegex);
+        } catch (PatternSyntaxException e) {
+            p = Pattern.compile("[!-~ ]");
+        }
+        StringBuilder sb = new StringBuilder();
+        for (char c : s.toCharArray()) {
+            if (!p.matcher(String.valueOf(c)).matches()) continue;
+            sb.append(c);
+        }
+        return sb.toString();
     }
 
     /**
@@ -238,6 +262,7 @@ public class DataManager {
         if (!isEmote && !isEmoticon(inGameMessage)) inGameMessage = capitalizeFirstLetter(inGameMessage);
         if (plugin.isAuthorized(cs, "rchat.colors")) inGameMessage = colorize(inGameMessage);
         else inGameMessage = decolorize(inGameMessage);
+        inGameMessage = stripFromWhitelist(inGameMessage);
         message = message.replace("{group}", getGroup(cs));
         message = message.replace("{suffix}", getSuffix(cs));
         message = message.replace("{prefix}", getPrefix(cs));

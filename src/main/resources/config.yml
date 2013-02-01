@@ -24,10 +24,15 @@ chat:
   say-format: "&d[Server] {message}"
   admin-chat-format: "&b[Admin] {dispname}:&3 {message}"
   capitalize-first-letter: true
+  character-whitelist:
+    enabled: false
+    # This matches almost all (if not all) characters on a US keyboard. If you use a different locale, you may need to
+    # tweak this regex.
+    character-regex: "[!-~ ]"
   remove-all-caps:
     enabled: false
-    # The amount of capital letters in the message must be greater than this percentage
-    # in order to be removed. Emoticons are counted as lowercase.
+    # The amount of capital letters in the message must be greater than this percentage in order to be removed.
+    # Emoticons are counted as lowercase.
     # HELlo = 60% caps
     # HI! = 100% caps
     # hey = 0% caps

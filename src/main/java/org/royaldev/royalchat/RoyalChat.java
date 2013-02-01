@@ -49,6 +49,9 @@ public class RoyalChat extends JavaPlugin {
     public boolean highlightPlayers;
     public boolean smokePlayers;
     public boolean highlightURLs;
+    public boolean useCharWhitelist;
+
+    public String charWhitelistRegex;
 
     private VanishPlugin vp;
 
@@ -117,6 +120,9 @@ public class RoyalChat extends JavaPlugin {
         highlightPlayers = c.getBoolean("chat.highlights.players.enabled", true);
         smokePlayers = c.getBoolean("chat.highlights.players.poof-smoke", true);
         highlightURLs = c.getBoolean("chat.highlights.urls", true);
+        useCharWhitelist = c.getBoolean("chat.character-whitelist.enabled", false);
+
+        charWhitelistRegex = c.getString("chat.character-whitelist.character-regex", "[!-~ ]");
     }
 
     private void saveLangFile(String name) {
