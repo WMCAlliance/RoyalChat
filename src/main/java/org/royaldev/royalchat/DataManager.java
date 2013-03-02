@@ -296,7 +296,7 @@ public class DataManager {
      */
     public String colorize(final String message) {
         if (message == null) return null;
-        return message.replaceAll("&([a-f0-9k-or])", "\u00a7$1");
+        return message.replaceAll("&([a-f0-9k-or])", ChatColor.COLOR_CHAR + "$1");
     }
 
     /**
@@ -609,20 +609,22 @@ public class DataManager {
      * Gets the last color used in a string. Useful for inserting colored text into a string.
      * <p/>
      * If there is none, returns \u00a7r (ChatColor.RESET)
+     * <p/>
+     * Note: This will change with Bukkit's ChatColor.COLOR_CHAR; "\u00a7" is just for easy understanding.
      *
      * @param s String to check
      * @return Color code of last color (e.g. \u00a7a) ready to be used
      */
     public static String getLastColor(String s) {
-        String lastColor = "\u00a7r";
+        String lastColor = ChatColor.COLOR_CHAR + "r";
         String[] parts = s.split("");
         for (int i = 0; i < parts.length; i++) {
             String part = parts[i];
-            if (!part.equals("\u00a7")) continue;
+            if (!part.equals(String.valueOf(ChatColor.COLOR_CHAR))) continue;
             if (i + 1 > parts.length) continue;
             String code = parts[i + 1];
             if (!code.matches("(?i)[a-f0-9k-or]")) continue;
-            lastColor = "\u00a7" + code;
+            lastColor = ChatColor.COLOR_CHAR + code;
         }
         return lastColor;
     }
@@ -631,21 +633,23 @@ public class DataManager {
      * Gets the last color used in a string. Useful for inserting colored text into a string.
      * <p/>
      * If there is none, returns \u00a7r (ChatColor.RESET)
+     * <p/>
+     * Note: This will change with Bukkit's ChatColor.COLOR_CHAR; "\u00a7" is just for easy understanding.
      *
      * @param s    String to check
      * @param stop At what position in the string to stop checking for the last color
      * @return Color code of last color (e.g. \u00a7a) ready to be used
      */
     public static String getLastColor(String s, int stop) {
-        String lastColor = "\u00a7r";
+        String lastColor = ChatColor.COLOR_CHAR + "r";
         String[] parts = s.split("");
         for (int i = 0; i < stop; i++) {
             String part = parts[i];
-            if (!part.equals("\u00a7")) continue;
+            if (!part.equals(String.valueOf(ChatColor.COLOR_CHAR))) continue;
             if (i + 1 > parts.length) continue;
             String code = parts[i + 1];
             if (!code.matches("(?i)[a-f0-9k-or]")) continue;
-            lastColor = "\u00a7" + code;
+            lastColor = ChatColor.COLOR_CHAR + code;
         }
         return lastColor;
     }
