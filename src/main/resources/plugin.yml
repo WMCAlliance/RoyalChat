@@ -1,7 +1,7 @@
 name: RoyalChat
 main: org.royaldev.royalchat.RoyalChat
 author: jkcclemens
-version: ${project.version}
+version: ${pluginversion}
 softdepend: [Vault, Factions, RoyalCommands, VanishNoPacket, Towny, Multiverse-Core]
 website: http://dev.royaldev.org
 

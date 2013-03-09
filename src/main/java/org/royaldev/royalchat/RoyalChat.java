@@ -24,6 +24,8 @@ import org.royaldev.royalchat.rcommands.CmdSay;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.royaldev.royalchat.Language.NO_PERMISSIONS_SYSTEM;
 
@@ -54,6 +56,8 @@ public class RoyalChat extends JavaPlugin {
     public String charWhitelistRegex;
 
     private VanishPlugin vp;
+
+    private final Pattern versionPattern = Pattern.compile("(\\d+\\.\\d+\\.\\d+)(\\-SNAPSHOT)?(\\-local\\-(\\d{8}\\.\\d{6})|\\-(\\d+))?");
 
     public boolean isVanished(Player p) {
         if (vp == null) {
@@ -150,9 +154,29 @@ public class RoyalChat extends JavaPlugin {
         }
 
         try {
-            new MetricsLite(this).start();
-        } catch (IOException e) {
-            log.warning("Could not start Metrics: " + e.getMessage());
+            Matcher matcher = versionPattern.matcher(getDescription().getVersion());
+            matcher.matches();
+            // 1 = base version
+            // 2 = -SNAPSHOT
+            // 5 = build #
+            String versionMinusBuild = (matcher.group(1) == null) ? "Unknown" : matcher.group(1);
+            String build = (matcher.group(5) == null) ? "local build" : matcher.group(5);
+            if (matcher.group(2) == null) build = "release";
+            Metrics m = new Metrics(this);
+            Metrics.Graph g = m.createGraph("Version");
+            g.addPlotter(
+                    new Metrics.Plotter(versionMinusBuild + "~=~" + build) {
+                        @Override
+                        public int getValue() {
+                            return 1;
+                        }
+                    }
+            );
+            m.addGraph(g);
+            if (m.start()) getLogger().info("Metrics enabled. Thank you!");
+            else getLogger().info("Metrics disabled. If you want to help keep accurate statistics, turn it on!");
+        } catch (Exception e) {
+            getLogger().warning("Couldn't start Metrics: " + e.getMessage());
         }
 
         withVault = getServer().getPluginManager().getPlugin("Vault") != null;
