@@ -16,6 +16,7 @@ public class CmdRClear implements CommandExecutor {
         plugin = instance;
     }
 
+    @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("rclear")) {
             if (!plugin.isAuthorized(cs, "rchat.rclear")) {
@@ -35,13 +36,13 @@ public class CmdRClear implements CommandExecutor {
                     return true;
                 }
             }
-            if (t == null || plugin.isVanished(t)) {
-                if (cs == null) return false;
+            if ((t == null || (plugin.isVanished(t) && !t.getName().equals(cs.getName())))) {
+                if (cs == null) return false; // satisfies IntelliJ
                 cs.sendMessage(ChatColor.RED + "That player does not exist!");
                 return true;
             }
             for (int i = 0; i < 120; i++) t.sendMessage("");
-            if (!cs.equals(t))
+            if (!cs.getName().equals(t.getName()))
                 cs.sendMessage(ChatColor.BLUE + "Cleared the screen of " + ChatColor.GRAY + t.getName() + ChatColor.BLUE + ".");
             return true;
         }
