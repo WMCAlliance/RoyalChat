@@ -96,20 +96,7 @@ public class DataManager {
      * @param cs CommandSender to get group of
      * @return group name if using Vault or empty string if without group or not using Vault (never null)
      */
-    public String[] getGroups(final CommandSender cs) {
-        if (!(cs instanceof Player)) return new String[0];
-        if (!plugin.withVault) return new String[0];
-        final Player p = (Player) cs;
-        try {
-            String[] groups = RoyalChat.permission.getPlayerGroups(p);
-            if (groups == null) return new String[0];
-            return groups;
-        } catch (Exception e) {
-            return new String[0];
-        }
-    }
-
-    public String getPrimaryGroup(final CommandSender cs) {
+    public String getGroup(final CommandSender cs) {
         if (!(cs instanceof Player)) return "";
         if (!plugin.withVault) return "";
         final Player p = (Player) cs;
@@ -135,11 +122,9 @@ public class DataManager {
         final Player p = (Player) cs;
         String pSuffix = plugin.getConfig().getString("players.suffixes.players." + p.getName());
         if (pSuffix != null) return pSuffix;
-        String[] groups = getGroups(p);
-        StringBuilder gSuffix = new StringBuilder();
-        for (String group : groups)
-            gSuffix.append((group.isEmpty()) ? null : plugin.getConfig().getString("players.suffixes.groups." + group));
-        if (gSuffix.length() > 0) return gSuffix.toString();
+        String group = getGroup(p);
+        String gSuffix = (group.isEmpty()) ? null : plugin.getConfig().getString("players.suffixes.groups." + group);
+        if (gSuffix != null) return gSuffix;
         String all = plugin.getConfig().getString("players.suffixes.*");
         if (all != null) return all;
         if (!plugin.withVault) return "";
@@ -207,11 +192,9 @@ public class DataManager {
         final Player p = (Player) cs;
         String pPrefix = plugin.getConfig().getString("players.prefixes.players." + p.getName());
         if (pPrefix != null) return pPrefix;
-        String[] groups = getGroups(p);
-        StringBuilder gPrefix = new StringBuilder();
-        for (String group : groups)
-            gPrefix.append((group.isEmpty()) ? null : plugin.getConfig().getString("players.prefixes.groups." + group));
-        if (gPrefix.length() > 0) return gPrefix.toString();
+        String group = getGroup(p);
+        String gPrefix = (group.isEmpty()) ? null : plugin.getConfig().getString("players.prefixes.groups." + group);
+        if (gPrefix != null) return gPrefix;
         String all = plugin.getConfig().getString("players.prefixes.*");
         if (all != null) return all;
         if (!plugin.withVault) return "";
@@ -280,7 +263,7 @@ public class DataManager {
         if (plugin.isAuthorized(cs, "rchat.colors")) inGameMessage = colorize(inGameMessage);
         else inGameMessage = decolorize(inGameMessage);
         inGameMessage = stripFromWhitelist(inGameMessage);
-        message = message.replace("{group}", getPrimaryGroup(cs));
+        message = message.replace("{group}", getGroup(cs));
         message = message.replace("{suffix}", getSuffix(cs));
         message = message.replace("{prefix}", getPrefix(cs));
         message = message.replace("{rawworld}", ((isPlayer) ? p.getWorld().getName() : NO_WORLD.toString()));
