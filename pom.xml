@@ -51,7 +51,7 @@
         <dependency>
             <groupId>org.royaldev</groupId>
             <artifactId>royalcommands</artifactId>
-            <version>LATEST</version>
+            <version>0.2.8</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
