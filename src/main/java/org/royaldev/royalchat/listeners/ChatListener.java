@@ -1,6 +1,6 @@
 package org.royaldev.royalchat.listeners;
 
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.entity.UPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,12 +37,12 @@ public class ChatListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void ohLordFactionsSucksSoBad(AsyncPlayerChatEvent e) {
         if (!plugin.withFactions) return;
-        FPlayer from = FactionsUtils.getFPlayer(e.getPlayer());
+        UPlayer from = FactionsUtils.getUPlayer(e.getPlayer());
         String format = e.getFormat().replace("%%", "%"); // fix sanitized chat, as this is no longer vanilla
         if (!format.contains("{factionscoloredtag}")) return;
         plugin.getServer().getConsoleSender().sendMessage(format.replace("{factionscoloredtag}", FactionsUtils.getFactionTag(from)));
         for (Player t : e.getRecipients()) {
-            FPlayer to = FactionsUtils.getFPlayer(t);
+            UPlayer to = FactionsUtils.getUPlayer(t);
             t.sendMessage(format.replace("{factionscoloredtag}", FactionsUtils.getColoredFactionTag(from, to)));
         }
         e.setCancelled(true);

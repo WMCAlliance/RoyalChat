@@ -1,7 +1,7 @@
 package org.royaldev.royalchat.dependencies;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.entity.UPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -13,23 +13,23 @@ import static org.royaldev.royalchat.Language.NO_FACTIONS_TITLE;
 
 public class FactionsUtils {
     /**
-     * Gets the FPlayer for a name
+     * Gets the UPlayer for a name
      *
-     * @param name Name of FPlayer to get
-     * @return FPlayer or null
+     * @param name Name of UPlayer to get
+     * @return UPlayer or null
      */
-    public static FPlayer getFPlayer(String name) {
-        return FPlayers.i.get(name);
+    public static UPlayer getUPlayer(String name) {
+        return UPlayer.get(name);
     }
 
     /**
-     * Gets the FPlayer for a player
+     * Gets the UPlayer for a player
      *
-     * @param p Player to get FPlayer of
-     * @return FPlayer or null
+     * @param p Player to get UPlayer of
+     * @return UPlayer or null
      */
-    public static FPlayer getFPlayer(Player p) {
-        return FPlayers.i.get(p);
+    public static UPlayer getUPlayer(Player p) {
+        return UPlayer.get(p);
     }
 
     /**
@@ -39,13 +39,14 @@ public class FactionsUtils {
      * @param to   Person receiving message
      * @return Faction tag with prefix & colors
      */
-    public static String getColoredFactionTag(final FPlayer from, final FPlayer to) {
+    public static String getColoredFactionTag(final UPlayer from, final UPlayer to) {
         String relationColor = to.getRelationTo(from).getColor().toString();
-        String factionTag = from.getTag();
-        //String prefix = from.getRole().getPrefix();
+        String factionTag = from.getFactionName();
+        final Rel role = from.getRole();
+        String prefix = (role == null) ? "" : role.getPrefix();
         StringBuilder sb = new StringBuilder();
         sb.append(relationColor);
-        sb.append(""); // prefix
+        sb.append(prefix);
         sb.append(factionTag);
         sb.append(ChatColor.RESET);
         return sb.toString();
@@ -57,11 +58,12 @@ public class FactionsUtils {
      * @param fp Person to get tag of
      * @return Faction tag
      */
-    public static String getFactionTag(final FPlayer fp) {
-        String factionTag = fp.getTag();
-        //String prefix = fp.getRole().getPrefix();
+    public static String getFactionTag(final UPlayer fp) {
+        String factionTag = fp.getFactionName();
+        final Rel role = fp.getRole();
+        String prefix = (role == null) ? "" : role.getPrefix();
         StringBuilder sb = new StringBuilder();
-        sb.append(""); // prefix
+        sb.append(prefix);
         sb.append(factionTag);
         sb.append(ChatColor.RESET);
         return sb.toString();
@@ -76,10 +78,10 @@ public class FactionsUtils {
      */
     public static String replaceFactions(final String format, final CommandSender cs) {
         String message = format;
-        FPlayer fp = getFPlayer(cs.getName());
+        UPlayer fp = getUPlayer(cs.getName());
         boolean isFP = fp != null;
         message = message.replace("{factionstitle}", (isFP) ? fp.getTitle() : NO_FACTIONS_TITLE.toString());
-        message = message.replace("{factionsfaction}", (isFP) ? fp.getTag() : NO_FACTIONS_FACTION.toString());
+        message = message.replace("{factionsfaction}", (isFP) ? fp.getFactionName() : NO_FACTIONS_FACTION.toString());
         message = message.replace("{factionstag}", (isFP) ? getFactionTag(fp) : NO_FACTIONS_TAG.toString());
         message = message.replace("{factionspower}", (isFP) ? String.valueOf(fp.getPowerRounded()) : NO_FACTIONS_POWER.toString());
         return message;
