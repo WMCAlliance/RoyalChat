@@ -296,7 +296,7 @@ public class DataManager {
      */
     public String colorize(final String message) {
         if (message == null) return null;
-        return message.replaceAll("&([a-f0-9k-or])", ChatColor.COLOR_CHAR + "$1");
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     /**
