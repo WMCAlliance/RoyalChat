@@ -3,6 +3,7 @@ main: org.royaldev.royalchat.RoyalChat
 author: jkcclemens
 version: ${pluginversion}
 softdepend: [Vault, Factions, RoyalCommands, VanishNoPacket, Towny, Multiverse-Core]
+description: Format Minecraft's chat easily.
 website: http://dev.royaldev.org
 
 commands:
