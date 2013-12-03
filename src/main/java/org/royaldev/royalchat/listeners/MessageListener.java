@@ -9,6 +9,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.royaldev.royalchat.RoyalChat;
 
+import java.util.List;
+
 public class MessageListener implements Listener {
 
     private final RoyalChat plugin;
@@ -64,8 +66,12 @@ public class MessageListener implements Listener {
         if (e.getTo().getWorld().equals(e.getFrom().getWorld())) return;
         Player p = e.getPlayer();
         if (plugin.isVanished(p)) return;
-        String format = plugin.getConfig().getString("game-messages.world");
+        String format = plugin.getConfig().getString("game-messages.world.message");
         if (format.isEmpty() || format.equals("no-handle")) return;
+        if (plugin.getConfig().getBoolean("game-messages.world.display-whitelist.enabled")) {
+            List<String> whitelistedWorlds = plugin.getConfig().getStringList("game-messages.world.display-whitelist.list");
+            if (!whitelistedWorlds.contains(e.getTo().getWorld().getName())) return;
+        }
         format = format.replace("{fromworld}", plugin.dm.getWorldName(e.getFrom().getWorld()));
         format = format.replace("{world}", plugin.dm.getWorldName(e.getTo().getWorld()));
         format = plugin.dm.formatChat(p, format, "", false, false, false, false);

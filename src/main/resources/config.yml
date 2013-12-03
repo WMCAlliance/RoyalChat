@@ -72,4 +72,11 @@ game-messages:
   join: "&e{name} has joined."
   quit: "&e{name} has quit."
   kick: "&e{name} was kicked for {message}!"
-  world: "&e{name} joined {world} from {fromworld}."
+  world:
+    message: "&e{name} joined {world} from {fromworld}."
+    # Only display the message when the player is moving to the following worlds.
+    display-whitelist:
+      enabled: false
+      list:
+      - world
+      - world_nether
