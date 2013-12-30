@@ -28,7 +28,7 @@ commands:
     usage: /<command> [message]
   adminchat:
     description: Sends a message to an always-present admin channel.
-    aliases: [ac, a]
+    aliases: [ac, a, rcac]
     usage: /<command> (message)
 
 permissions:
