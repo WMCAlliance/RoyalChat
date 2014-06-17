@@ -285,6 +285,7 @@ public class DataManager {
             message = message.replace("{#inchannel}", (isNull) ? "0" : String.valueOf(c.getMembers().size()));
         }
         if (sanitize) message = sanitizeChat(message);
+        return message;
     }
 
     /**
