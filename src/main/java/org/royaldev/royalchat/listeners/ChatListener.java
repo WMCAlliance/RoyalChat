@@ -1,6 +1,6 @@
 package org.royaldev.royalchat.listeners;
 
-import com.massivecraft.factions.entity.UPlayer;
+import com.massivecraft.factions.FPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,10 +26,10 @@ public class ChatListener implements Listener {
 
     @EventHandler
     public void channelAdder(AsyncPlayerChatEvent e) {
-        Player p = e.getPlayer();
+        final Player p = e.getPlayer();
         if (!plugin.useChannels) return;
         if (plugin.dm.isInChannel(p)) return;
-        Channel c = plugin.dm.getDefaultChannel();
+        final Channel c = plugin.dm.getDefaultChannel();
         if (c == null) return;
         c.addMember(p);
     }
@@ -37,12 +37,12 @@ public class ChatListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void ohLordFactionsSucksSoBad(AsyncPlayerChatEvent e) {
         if (!plugin.withFactions) return;
-        UPlayer from = FactionsUtils.getUPlayer(e.getPlayer());
-        String format = e.getFormat().replace("%%", "%"); // fix sanitized chat, as this is no longer vanilla
+        final FPlayer from = FactionsUtils.getFPlayer(e.getPlayer());
+        final String format = e.getFormat().replace("%%", "%"); // fix sanitized chat, as this is no longer vanilla
         if (!format.contains("{factionscoloredtag}")) return;
         plugin.getServer().getConsoleSender().sendMessage(format.replace("{factionscoloredtag}", FactionsUtils.getFactionTag(from)));
-        for (Player t : e.getRecipients()) {
-            UPlayer to = FactionsUtils.getUPlayer(t);
+        for (final Player t : e.getRecipients()) {
+            final FPlayer to = FactionsUtils.getFPlayer(t);
             t.sendMessage(format.replace("{factionscoloredtag}", FactionsUtils.getColoredFactionTag(from, to)));
         }
         e.setCancelled(true);
