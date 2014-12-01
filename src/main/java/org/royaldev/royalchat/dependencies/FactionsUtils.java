@@ -23,7 +23,7 @@ public class FactionsUtils {
      */
     public static String getColoredFactionTag(final FPlayer from, final FPlayer to) {
         final String relationColor = to.getRelationTo(from).getColor().toString();
-        final String factionTag = from.getFactionId();
+        final String factionTag = from.getFaction().getTag();
         final Role role = from.getRole();
         String prefix = (role == null) ? "" : role.getPrefix();
         return relationColor + prefix + factionTag + ChatColor.RESET;
@@ -56,7 +56,7 @@ public class FactionsUtils {
      * @return Faction tag
      */
     public static String getFactionTag(final FPlayer fp) {
-        final String factionTag = fp.getFactionId();
+        final String factionTag = fp.getFaction().getTag();
         final Role role = fp.getRole();
         final String prefix = (role == null) ? "" : role.getPrefix();
         return prefix + factionTag + ChatColor.RESET;
@@ -74,7 +74,7 @@ public class FactionsUtils {
         final FPlayer fp = FactionsUtils.getFPlayer(cs.getName());
         boolean isFP = fp != null;
         message = message.replace("{factionstitle}", (isFP) ? fp.getTitle() : NO_FACTIONS_TITLE.toString());
-        message = message.replace("{factionsfaction}", (isFP) ? fp.getFactionId() : NO_FACTIONS_FACTION.toString());
+        message = message.replace("{factionsfaction}", (isFP) ? fp.getFaction().getTag() : NO_FACTIONS_FACTION.toString());
         message = message.replace("{factionstag}", (isFP) ? getFactionTag(fp) : NO_FACTIONS_TAG.toString());
         message = message.replace("{factionspower}", (isFP) ? String.valueOf(fp.getPowerRounded()) : NO_FACTIONS_POWER.toString());
         return message;
