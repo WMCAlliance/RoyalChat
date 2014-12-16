@@ -37,7 +37,7 @@
         <dependency>
             <groupId>com.massivecraft</groupId>
             <artifactId>factions</artifactId>
-            <version>1.6.9.5-U0.1.12</version>
+            <version>1.6.9.5</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
