@@ -13,7 +13,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.royaldev.royalchat.dependencies.FactionsUtils;
 import org.royaldev.royalchat.dependencies.TownyUtils;
-import org.royaldev.royalcommands.RoyalCommands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -340,8 +339,6 @@ public class DataManager {
      */
     public String getWorldName(World w) {
         String name = w.getName();
-        if (plugin.withRoyalCommands)
-            name = RoyalCommands.wm.getConfig().getString("worlds." + w.getName() + ".displayname", w.getName());
         if (plugin.withMultiverse) {
             MultiverseCore mvc = (MultiverseCore) plugin.getServer().getPluginManager().getPlugin("Multiverse-Core");
             MultiverseWorld mvw = mvc.getMVWorldManager().getMVWorld(w);
@@ -729,6 +726,11 @@ public class DataManager {
             numCaps++;
         }
         return numCaps / str.length() > percent / 100;
+    }
+
+    public String makeReplacements() {
+        this.plugin.getConfig().getMapList("replacements");
+        return null;
     }
 
 }
