@@ -215,7 +215,7 @@ public class DataManager {
      */
     private String replaceTowny(final String format, final CommandSender cs) {
         String message = format;
-        if (plugin.withTowny) message = TownyUtils.replaceTowny(message, cs);
+        //if (plugin.withTowny) message = TownyUtils.replaceTowny(message, cs);
         return message;
     }
 
