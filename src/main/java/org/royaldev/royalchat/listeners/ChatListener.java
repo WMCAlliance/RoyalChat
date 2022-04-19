@@ -1,6 +1,5 @@
 package org.royaldev.royalchat.listeners;
 
-import com.massivecraft.factions.FPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,19 +33,19 @@ public class ChatListener implements Listener {
         c.addMember(p);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void ohLordFactionsSucksSoBad(AsyncPlayerChatEvent e) {
-        if (!plugin.withFactions) return;
-        final FPlayer from = FactionsUtils.getFPlayer(e.getPlayer());
-        final String format = e.getFormat().replace("%%", "%"); // fix sanitized chat, as this is no longer vanilla
-        if (!format.contains("{factionscoloredtag}")) return;
-        plugin.getServer().getConsoleSender().sendMessage(format.replace("{factionscoloredtag}", FactionsUtils.getFactionTag(from)));
-        for (final Player t : e.getRecipients()) {
-            final FPlayer to = FactionsUtils.getFPlayer(t);
-            t.sendMessage(format.replace("{factionscoloredtag}", FactionsUtils.getColoredFactionTag(from, to)));
-        }
-        e.setCancelled(true);
-    }
+//    @EventHandler(priority = EventPriority.HIGHEST)
+//    public void ohLordFactionsSucksSoBad(AsyncPlayerChatEvent e) {
+//        if (!plugin.withFactions) return;
+//        //final FPlayer from = FactionsUtils.getFPlayer(e.getPlayer());
+//        final String format = e.getFormat().replace("%%", "%"); // fix sanitized chat, as this is no longer vanilla
+//        if (!format.contains("{factionscoloredtag}")) return;
+//        plugin.getServer().getConsoleSender().sendMessage(format.replace("{factionscoloredtag}", FactionsUtils.getFactionTag(from)));
+//        for (final Player t : e.getRecipients()) {
+//            //final FPlayer to = FactionsUtils.getFPlayer(t);
+//            t.sendMessage(format.replace("{factionscoloredtag}", FactionsUtils.getColoredFactionTag(from, to)));
+//        }
+//        e.setCancelled(true);
+//    }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
