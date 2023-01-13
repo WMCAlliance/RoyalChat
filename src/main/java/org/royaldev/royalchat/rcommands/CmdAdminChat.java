@@ -1,7 +1,7 @@
 package org.royaldev.royalchat.rcommands;
 
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,7 +21,7 @@ public class CmdAdminChat implements CommandExecutor {
         plugin = instance;
     }
 
-    private static final List<String> toggled = new ArrayList<String>();
+    private static final List<String> toggled = new ArrayList<>();
 
     public static boolean isToggled(Player p) {
         synchronized (toggled) {
