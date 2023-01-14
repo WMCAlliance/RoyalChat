@@ -37,6 +37,10 @@
             <id>Multiverse-Core</id>
             <url>https://repo.onarandombox.com/content/repositories/multiverse/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -66,17 +70,15 @@
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
-            <artifactId>Vault</artifactId>
-            <version>1.6.7</version>
-            <type>jar</type>
-            <scope>compile</scope>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.kitteh</groupId>
+            <groupId>com.github.mbax</groupId>
             <artifactId>VanishNoPacket</artifactId>
-            <version>3.18.10</version>
-            <type>jar</type>
-            <scope>compile</scope>
+            <version>3.22</version>
+            <scope>provided</scope>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.palmergames</groupId>-->
