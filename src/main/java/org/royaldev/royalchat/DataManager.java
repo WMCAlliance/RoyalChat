@@ -2,6 +2,9 @@ package org.royaldev.royalchat;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+
+import me.clip.placeholderapi.PlaceholderAPI;
+
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -269,6 +272,7 @@ public class DataManager {
         message = message.replace("{world}", ((isPlayer) ? getWorldName(p.getWorld()) : NO_WORLD.toString()));
         message = replaceTowny(message, cs);
         message = replaceFactions(message, cs);
+        if (isPlayer && plugin.withPlaceholderAPI) message = PlaceholderAPI.setPlaceholders(p, message);
         message = colorize(message); // do this here to colorize everything but user input
         message = message.replace("{message}", inGameMessage);
         message = highlightURLs(message);

@@ -43,6 +43,7 @@ public class RoyalChat extends JavaPlugin {
     public boolean withFactions = false;
     public boolean withRoyalCommands = false;
     public boolean withMultiverse = false;
+    public boolean withPlaceholderAPI = false;
     public boolean withVNP = false;
     public boolean withTowny = false;
 
@@ -183,6 +184,7 @@ public class RoyalChat extends JavaPlugin {
         withRoyalCommands = getServer().getPluginManager().getPlugin("RoyalCommands") != null;
         withTowny = getServer().getPluginManager().getPlugin("Towny") != null;
         withMultiverse = getServer().getPluginManager().getPlugin("Multiverse-Core") != null;
+        withPlaceholderAPI = getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
         withFactions = getServer().getPluginManager().getPlugin("Factions") != null;
         withVNP = getServer().getPluginManager().getPlugin("VanishNoPacket") != null;
         vp = (VanishPlugin) getServer().getPluginManager().getPlugin("VanishNoPacket");
