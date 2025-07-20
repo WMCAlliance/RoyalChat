@@ -1,7 +1,7 @@
 package org.royaldev.royalchat;
 
-import com.onarandombox.MultiverseCore.MultiverseCore;
-import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import org.mvplugins.multiverse.core.MultiverseCore;
+import org.mvplugins.multiverse.core.world.LoadedMultiverseWorld;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
@@ -345,8 +345,8 @@ public class DataManager {
         String name = w.getName();
         if (plugin.withMultiverse) {
             MultiverseCore mvc = (MultiverseCore) plugin.getServer().getPluginManager().getPlugin("Multiverse-Core");
-            MultiverseWorld mvw = mvc.getMVWorldManager().getMVWorld(w);
-            if (mvw != null) name = mvw.getColoredWorldString();
+            LoadedMultiverseWorld mvw = mvc.getApi().getWorldManager().getLoadedWorld(name).get();
+            if (mvw != null) name = mvw.getAliasOrName();
         }
         return colorize(name);
     }
