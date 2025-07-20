@@ -42,7 +42,7 @@
         </repository>
         <repository>
             <id>Multiverse-Core</id>
-            <url>https://repo.onarandombox.com/content/repositories/multiverse/</url>
+            <url>https://repo.onarandombox.com/content/groups/public/</url>
         </repository>
         <repository>
             <id>placeholderapi</id>
